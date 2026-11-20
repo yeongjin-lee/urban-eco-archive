@@ -256,6 +256,89 @@
   margin-top: 8px;
 }
 
+/* 4) 공간의 기억 (PDF 17페이지 시안) */
+.memoryHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.memorySub {
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.memoryHeroImg {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.memoryTagline {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: 18px;
+}
+
+.memoryLead {
+  font-size: 42px;
+  font-weight: 300;
+  margin-bottom: 28px;
+}
+
+.memoryIndexList {
+  border-top: 1px solid var(--color-border-muted);
+  margin-bottom: 40px;
+}
+
+.memoryIndexRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 8px;
+  border-bottom: 1px solid var(--color-border-muted);
+  font-size: 14px;
+}
+
+.memoryIndexRow:hover {
+  background-color: #fafbf8;
+}
+
+.memoryFourGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.memoryCol {
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+}
+
+.memoryColTitle {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.memoryColImg {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.memoryColDesc {
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
 @media (max-width: 960px) {
   .walkingHero {
     grid-template-columns: 1fr;
@@ -270,7 +353,8 @@
     grid-template-columns: 1fr;
   }
 
-  .storyGrid {
+  .storyGrid,
+  .memoryFourGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -284,7 +368,12 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .storyGrid {
+  .storyGrid,
+  .memoryFourGrid {
     grid-template-columns: 1fr;
+  }
+
+  .memoryLead {
+    font-size: 28px;
   }
 }

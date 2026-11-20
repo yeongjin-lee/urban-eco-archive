@@ -1,6 +1,11 @@
 import { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Link, NavLink, useParams } from 'react-router-dom'
+import memoryHeroImg from '../assets/images/memory-hero.jpg'
+import propParkImg from '../assets/images/prop-park.jpg'
+import propStreetImg from '../assets/images/prop-street.jpg'
+import shelterRestImg from '../assets/images/shelter-rest.jpg'
+import shelterWalkImg from '../assets/images/shelter-walk.jpg'
 import { EcoMapView, type MapPin } from '../components/EcoMapView'
 import {
   ARCHIVING_HIGHLIGHTS,
@@ -103,17 +108,113 @@ export function MagazineDetailPage() {
         </div>
       )}
 
-      {/* 2. 공간의 기억 (공릉동의 역사) */}
+      {/* 2. 공간의 기억 (PDF 17페이지 시안 + 공릉동의 역사) */}
       {category === 'memory' && (
         <div>
-          <h1 className={styles.pageTitle}>공릉동의 역사 · 공간의 기억</h1>
-          <p className={styles.pageLead}>
-            시간의 흐름 속에서 공릉동의 자연과 마을이 어떻게 변해왔는지 기록합니다.
+          <div className={styles.memoryHeader}>
+            <h1 className={styles.pageTitle}>공간의 기억</h1>
+            <p className={styles.memorySub}>
+              장소에 남겨진 추억과
+              <br />
+              사람 사는 이야기
+            </p>
+          </div>
+
+          <img
+            src={memoryHeroImg}
+            alt="공릉동 철길 위 주민들의 모습"
+            className={styles.memoryHeroImg}
+          />
+
+          <p className={styles.memoryTagline}>
+            → A LOCATION-BASED ECOLOGICAL ARCHIVE AND DIGITAL NEIGHBORHOOD
+            MAGAZINE.
           </p>
+          <p className={styles.memoryLead}>Let’s turn over a local leaf.</p>
+
+          <div className={styles.memoryIndexList}>
+            <a href="#history-section" className={styles.memoryIndexRow}>
+              <ArrowRight size={16} />
+              <span>공릉동의 역사, 시간을 거쳐온 우리의 동네 이야기</span>
+            </a>
+            <Link to="/magazine/archiving" className={styles.memoryIndexRow}>
+              <ArrowRight size={16} />
+              <span>주민들이 기억하는 공릉동의 이야기</span>
+            </Link>
+            <Link to="/magazine/ecology" className={styles.memoryIndexRow}>
+              <ArrowRight size={16} />
+              <span>계절에 따라 변화하는 거리의 이야기</span>
+            </Link>
+            <Link to="/magazine/ecology" className={styles.memoryIndexRow}>
+              <ArrowRight size={16} />
+              <span>공릉동 생태 이야기</span>
+            </Link>
+          </div>
+
+          <div className={styles.memoryFourGrid}>
+            <article className={styles.memoryCol}>
+              <h2 className={styles.memoryColTitle}>공릉동의 역사</h2>
+              <img
+                src={shelterWalkImg}
+                alt="공릉동의 역사"
+                className={styles.memoryColImg}
+              />
+              <p className={styles.memoryColDesc}>
+                익숙한 골목 속 숨겨진 풍경을 발견하는 동네 산책 기록, 천천히
+                걷다 보면 만나는 공릉동만의 이야기들
+              </p>
+            </article>
+            <article className={styles.memoryCol}>
+              <h2 className={styles.memoryColTitle}>주민들의 추억</h2>
+              <img
+                src={shelterRestImg}
+                alt="주민들의 추억"
+                className={styles.memoryColImg}
+              />
+              <p className={styles.memoryColDesc}>
+                공릉동에서 나고 자란 사람들, 떠나와 정착한 젊은이들, 이 동네
+                사람들의 오래되고도 새로운 이야기
+              </p>
+            </article>
+            <article className={styles.memoryCol}>
+              <h2 className={styles.memoryColTitle}>계절의 변화</h2>
+              <img
+                src={propParkImg}
+                alt="계절의 변화"
+                className={styles.memoryColImg}
+              />
+              <p className={styles.memoryColDesc}>
+                계절의 변화를 담은 공릉동의 이야기를 함께 주민들의 추억들과 함께
+                이야기
+              </p>
+            </article>
+            <article className={styles.memoryCol}>
+              <h2 className={styles.memoryColTitle}>
+                공릉동 사는 사람들 이야기
+              </h2>
+              <img
+                src={propStreetImg}
+                alt="공릉동 사는 사람들 이야기"
+                className={styles.memoryColImg}
+              />
+              <p className={styles.memoryColDesc}>
+                상인과 주민의 목소리로 만나는 진짜 공릉동 이야기. 사람들의 삶과
+                일상이 쌓여 만들어가는 동네 기록
+              </p>
+            </article>
+          </div>
+
+          <h2
+            id="history-section"
+            className={styles.pageTitle}
+            style={{ fontSize: '24px', marginBottom: '20px' }}
+          >
+            공릉동의 역사
+          </h2>
           <div className={styles.timelineGrid}>
             {GONGNEUNG_HISTORY.map((item) => (
               <article key={item.era} className={styles.timelineCard}>
-                <h2 className={styles.timelineEra}>{item.era}</h2>
+                <h3 className={styles.timelineEra}>{item.era}</h3>
                 <p className={styles.timelineSub}>{item.subtitle}</p>
                 <p className={styles.timelineBody}>{item.body}</p>
               </article>
