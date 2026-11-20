@@ -57,6 +57,7 @@ export function ProposalsPage() {
   const [newLocation, setNewLocation] = useState('')
   const [newFile, setNewFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
 
   // Supabase가 연결되어 있으면 글 · 좋아요 · 댓글 · 북마크를 함께 불러옵니다
   useEffect(() => {
@@ -144,6 +145,7 @@ export function ProposalsPage() {
     e.preventDefault()
     if (!newTitle.trim() || !newDesc.trim() || submitting) return
     setSubmitting(true)
+    setFormError(null)
 
     if (supabase && user) {
       const uploadedUrl = newFile
@@ -165,24 +167,30 @@ export function ProposalsPage() {
         .select()
         .single()
 
-      if (!error && data) {
-        setProposals((prev) => [
-          {
-            id: data.id,
-            userId: data.user_id,
-            isDb: true,
-            tag: data.tag,
-            title: data.title,
-            description: data.description,
-            location: data.location,
-            image: data.image_url || propParkImg,
-            likes: 0,
-            comments: 0,
-            createdAt: String(data.created_at).slice(0, 10),
-          },
-          ...prev,
-        ])
+      if (error || !data) {
+        setFormError(
+          `등록 실패: ${error?.message || '데이터를 저장하지 못했습니다.'}`,
+        )
+        setSubmitting(false)
+        return
       }
+
+      setProposals((prev) => [
+        {
+          id: data.id,
+          userId: data.user_id,
+          isDb: true,
+          tag: data.tag,
+          title: data.title,
+          description: data.description,
+          location: data.location,
+          image: data.image_url || propParkImg,
+          likes: 0,
+          comments: 0,
+          createdAt: String(data.created_at).slice(0, 10),
+        },
+        ...prev,
+      ])
     } else {
       setProposals((prev) => [
         {
@@ -496,6 +504,9 @@ export function ProposalsPage() {
               onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
             />
           </label>
+          {formError && (
+            <p style={{ color: '#c93737', fontSize: '13px' }}>{formError}</p>
+          )}
           <button
             type="submit"
             disabled={submitting}
