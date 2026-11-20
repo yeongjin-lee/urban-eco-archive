@@ -1,0 +1,31 @@
+/* 사이트 전체에 적용되는 기본 스타일 (Step 2에서 디자인 시스템으로 확장) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  color: #333;
+  background: #fff;
+}
+
+.coming-soon {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.coming-soon h1 {
+  font-size: 2.5rem;
+}
+
+.coming-soon .note {
+  margin-top: 16px;
+  color: #6b7f4a;
+}
