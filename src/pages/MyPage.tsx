@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import {
   Bookmark,
   FileEdit,
@@ -7,11 +7,15 @@ import {
   MessageSquare,
   Settings,
   Star,
+  Trash2,
   User,
 } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 import aboutForestImg from '../assets/images/about-forest.jpg'
 import magMemoryImg from '../assets/images/mag-memory.jpg'
 import propStreamImg from '../assets/images/prop-stream.jpg'
+import { useAuth } from '../contexts/AuthContext'
+import { supabase } from '../lib/supabase'
 import styles from './MyPage.module.css'
 
 type SideTab = 'records' | 'proposals' | 'favorites' | 'settings'
@@ -58,41 +62,145 @@ const INITIAL_RECORDS: EcoRecord[] = [
 ]
 
 export function MyPage() {
+  const { user, isConfigured, signOut } = useAuth()
+  const navigate = useNavigate()
+
   const [activeTab, setActiveTab] = useState<SideTab>('records')
   const [filterCat, setFilterCat] = useState<RecordCategory>('전체')
-  const [records, setRecords] = useState<EcoRecord[]>(INITIAL_RECORDS)
+  const [records, setRecords] = useState<EcoRecord[]>(
+    isConfigured ? [] : INITIAL_RECORDS,
+  )
   const [showAddForm, setShowAddForm] = useState(false)
 
-  // 새 기록 추가 폼 입력값
   const [newCat, setNewCat] = useState<Exclude<RecordCategory, '전체'>>('식물')
   const [newTitle, setNewTitle] = useState('')
   const [newLocation, setNewLocation] = useState('')
 
-  const handleAddRecord = (e: FormEvent) => {
+  useEffect(() => {
+    if (!supabase || !user) return
+    supabase
+      .from('eco_records')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        if (!data) return
+        setRecords(
+          data.map((row) => ({
+            id: row.id,
+            category: row.category,
+            title: row.title,
+            date: String(row.created_at).slice(0, 10).replaceAll('-', '.'),
+            location: row.location,
+            image: aboutForestImg,
+            bookmarked: row.bookmarked,
+          })),
+        )
+      })
+  }, [user])
+
+  if (isConfigured && !user) {
+    return (
+      <section className={styles.content} style={{ textAlign: 'center' }}>
+        <h1 className={styles.contentTitle}>로그인이 필요합니다</h1>
+        <p
+          style={{
+            marginTop: '12px',
+            color: 'var(--color-text-muted)',
+            fontFamily: 'var(--font-serif)',
+          }}
+        >
+          내 생태 기록과 제안, 즐겨찾기를 관리하려면 로그인해 주세요.
+        </p>
+        <Link
+          to="/login"
+          className={styles.addBtn}
+          style={{ display: 'inline-block', marginTop: '24px' }}
+        >
+          로그인 / 회원가입 하러 가기
+        </Link>
+      </section>
+    )
+  }
+
+  const displayName =
+    (user?.user_metadata?.nickname as string | undefined) || '김슈니'
+  const displayEmail = user?.email || 'kimmsWuniii@swu.ac.kr'
+
+  const handleAddRecord = async (e: FormEvent) => {
     e.preventDefault()
     if (!newTitle.trim()) return
 
-    const newItem: EcoRecord = {
-      id: `rec-${Date.now()}`,
-      category: newCat,
-      title: newTitle.trim(),
-      date: '2026.11.20',
-      location: newLocation.trim() || '서울 노원구 공릉동',
-      image: aboutForestImg,
-      bookmarked: false,
+    if (supabase && user) {
+      const { data, error } = await supabase
+        .from('eco_records')
+        .insert({
+          user_id: user.id,
+          category: newCat,
+          title: newTitle.trim(),
+          location: newLocation.trim() || '서울 노원구 공릉동',
+        })
+        .select()
+        .single()
+
+      if (!error && data) {
+        setRecords((prev) => [
+          {
+            id: data.id,
+            category: data.category,
+            title: data.title,
+            date: String(data.created_at).slice(0, 10).replaceAll('-', '.'),
+            location: data.location,
+            image: aboutForestImg,
+            bookmarked: data.bookmarked,
+          },
+          ...prev,
+        ])
+      }
+    } else {
+      setRecords((prev) => [
+        {
+          id: `rec-${Date.now()}`,
+          category: newCat,
+          title: newTitle.trim(),
+          date: '2026.11.20',
+          location: newLocation.trim() || '서울 노원구 공릉동',
+          image: aboutForestImg,
+          bookmarked: false,
+        },
+        ...prev,
+      ])
     }
-    setRecords((prev) => [newItem, ...prev])
+
     setNewTitle('')
     setNewLocation('')
     setShowAddForm(false)
   }
 
-  const toggleBookmark = (id: string) => {
+  const toggleBookmark = async (id: string) => {
+    const target = records.find((r) => r.id === id)
+    if (!target) return
+    const nextValue = !target.bookmarked
+
+    if (supabase && user) {
+      await supabase
+        .from('eco_records')
+        .update({ bookmarked: nextValue })
+        .eq('id', id)
+    }
+
     setRecords((prev) =>
       prev.map((rec) =>
-        rec.id === id ? { ...rec, bookmarked: !rec.bookmarked } : rec,
+        rec.id === id ? { ...rec, bookmarked: nextValue } : rec,
       ),
     )
+  }
+
+  const deleteRecord = async (id: string) => {
+    if (supabase && user) {
+      await supabase.from('eco_records').delete().eq('id', id)
+    }
+    setRecords((prev) => prev.filter((rec) => rec.id !== id))
   }
 
   const counts = {
@@ -109,14 +217,13 @@ export function MyPage() {
 
   return (
     <div className={styles.page}>
-      {/* 왼쪽 프로필 & 메뉴 */}
       <aside className={styles.sidebar}>
         <div className={styles.profileBox}>
           <div className={styles.avatar}>
             <User size={38} />
           </div>
-          <h1 className={styles.userName}>김슈니</h1>
-          <p className={styles.userEmail}>kimmsWuniii@swu.ac.kr</p>
+          <h1 className={styles.userName}>{displayName}</h1>
+          <p className={styles.userEmail}>{displayEmail}</p>
           <button
             type="button"
             className={styles.editProfileBtn}
@@ -162,9 +269,10 @@ export function MyPage() {
           <button
             type="button"
             className={styles.sideItem}
-            onClick={() =>
-              alert('2단계(Supabase 연동)에서 실제 로그인/로그아웃이 연결됩니다!')
-            }
+            onClick={async () => {
+              await signOut()
+              navigate('/')
+            }}
           >
             <LogOut size={18} />
             <span>로그아웃</span>
@@ -172,7 +280,6 @@ export function MyPage() {
         </nav>
       </aside>
 
-      {/* 오른쪽 본문 */}
       <section className={styles.content}>
         {activeTab === 'records' && (
           <>
@@ -237,39 +344,56 @@ export function MyPage() {
               )}
             </div>
 
-            <div className={styles.recordList}>
-              {visibleRecords.map((rec) => (
-                <article key={rec.id} className={styles.recordRow}>
-                  <img
-                    src={rec.image}
-                    alt={rec.title}
-                    className={styles.recordImg}
-                  />
-                  <div>
-                    <p className={styles.recordCat}>{rec.category}</p>
-                    <h3 className={styles.recordTitle}>{rec.title}</h3>
-                    <div className={styles.recordMeta}>
-                      <span>{rec.date}</span>
-                      <span className={styles.recordLoc}>
-                        <MapPin size={14} />
-                        <span>{rec.location}</span>
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    className={styles.bookmarkBtn}
-                    aria-label="북마크"
-                    onClick={() => toggleBookmark(rec.id)}
-                  >
-                    <Bookmark
-                      size={22}
-                      fill={rec.bookmarked ? 'currentColor' : 'none'}
+            {visibleRecords.length === 0 ? (
+              <div className={styles.emptyPanel}>
+                아직 저장된 기록이 없어요. 위 <strong>기록 추가하기</strong>를
+                눌러 첫 기록을 남겨보세요!
+              </div>
+            ) : (
+              <div className={styles.recordList}>
+                {visibleRecords.map((rec) => (
+                  <article key={rec.id} className={styles.recordRow}>
+                    <img
+                      src={rec.image}
+                      alt={rec.title}
+                      className={styles.recordImg}
                     />
-                  </button>
-                </article>
-              ))}
-            </div>
+                    <div>
+                      <p className={styles.recordCat}>{rec.category}</p>
+                      <h3 className={styles.recordTitle}>{rec.title}</h3>
+                      <div className={styles.recordMeta}>
+                        <span>{rec.date}</span>
+                        <span className={styles.recordLoc}>
+                          <MapPin size={14} />
+                          <span>{rec.location}</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button
+                        type="button"
+                        className={styles.bookmarkBtn}
+                        aria-label="기록 삭제"
+                        onClick={() => deleteRecord(rec.id)}
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.bookmarkBtn}
+                        aria-label="북마크"
+                        onClick={() => toggleBookmark(rec.id)}
+                      >
+                        <Bookmark
+                          size={22}
+                          fill={rec.bookmarked ? 'currentColor' : 'none'}
+                        />
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
           </>
         )}
 
@@ -277,8 +401,11 @@ export function MyPage() {
           <>
             <h2 className={styles.contentTitle}>내 제안</h2>
             <div className={styles.emptyPanel}>
-              내가 작성한 녹색제안 목록이 이곳에 표시됩니다. (2단계 Supabase 연동
-              예정)
+              작성한 녹색제안은{' '}
+              <Link to="/proposals" style={{ textDecoration: 'underline' }}>
+                녹색제안 페이지
+              </Link>
+              에서 확인하고 삭제할 수 있습니다.
             </div>
           </>
         )}
@@ -325,7 +452,7 @@ export function MyPage() {
           <>
             <h2 className={styles.contentTitle}>설정</h2>
             <div className={styles.emptyPanel}>
-              프로필 이름·알림 설정 기능은 2단계(Supabase 연동)에서 연결됩니다.
+              현재 로그인 계정: <strong>{displayEmail}</strong>
             </div>
           </>
         )}
