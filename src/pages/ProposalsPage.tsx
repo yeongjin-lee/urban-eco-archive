@@ -21,6 +21,16 @@ type SortOption = 'latest' | 'likes' | 'comments'
 
 interface ProposalWithOwner extends Proposal {
   userId?: string
+  isDb?: boolean
+}
+
+interface ProposalComment {
+  id: string
+  proposalId: string
+  userId?: string
+  authorName: string
+  content: string
+  createdAt: string
 }
 
 export function ProposalsPage() {
@@ -33,6 +43,11 @@ export function ProposalsPage() {
   const [sortBy, setSortBy] = useState<SortOption>('latest')
   const [likedIds, setLikedIds] = useState<string[]>([])
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([])
+  const [commentsByProposal, setCommentsByProposal] = useState<
+    Record<string, ProposalComment[]>
+  >({})
+  const [openCommentId, setOpenCommentId] = useState<string | null>(null)
+  const [commentInput, setCommentInput] = useState('')
 
   // 제안 작성 폼 상태
   const [showForm, setShowForm] = useState(false)
@@ -43,30 +58,79 @@ export function ProposalsPage() {
   const [newFile, setNewFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  // Supabase가 연결되어 있으면 실제 DB에서 녹색제안 목록 불러오기
+  // Supabase가 연결되어 있으면 글 · 좋아요 · 댓글 · 북마크를 함께 불러옵니다
   useEffect(() => {
     if (!supabase) return
-    supabase
-      .from('proposals')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .then(({ data }) => {
-        if (!data || data.length === 0) return
-        const mapped: ProposalWithOwner[] = data.map((row) => ({
-          id: row.id,
-          userId: row.user_id,
-          tag: row.tag,
-          title: row.title,
-          description: row.description,
-          location: row.location,
-          image: row.image_url || propParkImg,
-          likes: row.likes_count,
-          comments: row.comments_count,
-          createdAt: String(row.created_at).slice(0, 10),
-        }))
-        setProposals([...mapped, ...INITIAL_PROPOSALS])
+    const client = supabase
+
+    async function loadProposals() {
+      const { data: rows } = await client
+        .from('proposals')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (!rows || rows.length === 0) return
+
+      const [{ data: likesRows }, { data: commentRows }, bookmarkRes] =
+        await Promise.all([
+          client.from('proposal_likes').select('proposal_id, user_id'),
+          client
+            .from('proposal_comments')
+            .select('*')
+            .order('created_at', { ascending: true }),
+          user
+            ? client
+                .from('proposal_bookmarks')
+                .select('proposal_id')
+                .eq('user_id', user.id)
+            : Promise.resolve({ data: null }),
+        ])
+
+      const likeCountMap: Record<string, number> = {}
+      const userLiked: string[] = []
+      likesRows?.forEach((l) => {
+        likeCountMap[l.proposal_id] = (likeCountMap[l.proposal_id] || 0) + 1
+        if (user && l.user_id === user.id) userLiked.push(l.proposal_id)
       })
-  }, [])
+
+      const groupedComments: Record<string, ProposalComment[]> = {}
+      commentRows?.forEach((c) => {
+        const list = groupedComments[c.proposal_id] ?? []
+        list.push({
+          id: c.id,
+          proposalId: c.proposal_id,
+          userId: c.user_id,
+          authorName: c.author_name,
+          content: c.content,
+          createdAt: String(c.created_at).slice(0, 10),
+        })
+        groupedComments[c.proposal_id] = list
+      })
+
+      const mapped: ProposalWithOwner[] = rows.map((row) => ({
+        id: row.id,
+        userId: row.user_id,
+        isDb: true,
+        tag: row.tag,
+        title: row.title,
+        description: row.description,
+        location: row.location,
+        image: row.image_url || propParkImg,
+        likes: likeCountMap[row.id] ?? 0,
+        comments: groupedComments[row.id]?.length ?? 0,
+        createdAt: String(row.created_at).slice(0, 10),
+      }))
+
+      setProposals([...mapped, ...INITIAL_PROPOSALS])
+      setLikedIds(userLiked)
+      setCommentsByProposal(groupedComments)
+      if (bookmarkRes.data) {
+        setBookmarkedIds(bookmarkRes.data.map((b) => b.proposal_id))
+      }
+    }
+
+    loadProposals()
+  }, [user])
 
   const handleOpenForm = () => {
     if (isConfigured && !user) {
@@ -106,6 +170,7 @@ export function ProposalsPage() {
           {
             id: data.id,
             userId: data.user_id,
+            isDb: true,
             tag: data.tag,
             title: data.title,
             description: data.description,
@@ -150,8 +215,125 @@ export function ProposalsPage() {
     setProposals((prev) => prev.filter((item) => item.id !== id))
   }
 
-  const toggleItem = (list: string[], id: string) =>
-    list.includes(id) ? list.filter((item) => item !== id) : [...list, id]
+  const handleToggleLike = async (item: ProposalWithOwner) => {
+    const isLiked = likedIds.includes(item.id)
+
+    if (item.isDb && supabase) {
+      if (!user) {
+        navigate('/login')
+        return
+      }
+      if (isLiked) {
+        await supabase
+          .from('proposal_likes')
+          .delete()
+          .eq('proposal_id', item.id)
+          .eq('user_id', user.id)
+      } else {
+        await supabase
+          .from('proposal_likes')
+          .insert({ proposal_id: item.id, user_id: user.id })
+      }
+      setProposals((prev) =>
+        prev.map((p) =>
+          p.id === item.id
+            ? { ...p, likes: p.likes + (isLiked ? -1 : 1) }
+            : p,
+        ),
+      )
+    }
+
+    setLikedIds((prev) =>
+      isLiked ? prev.filter((id) => id !== item.id) : [...prev, item.id],
+    )
+  }
+
+  const handleToggleBookmark = async (item: ProposalWithOwner) => {
+    const isBookmarked = bookmarkedIds.includes(item.id)
+
+    if (item.isDb && supabase) {
+      if (!user) {
+        navigate('/login')
+        return
+      }
+      if (isBookmarked) {
+        await supabase
+          .from('proposal_bookmarks')
+          .delete()
+          .eq('proposal_id', item.id)
+          .eq('user_id', user.id)
+      } else {
+        await supabase
+          .from('proposal_bookmarks')
+          .insert({ proposal_id: item.id, user_id: user.id })
+      }
+    }
+
+    setBookmarkedIds((prev) =>
+      isBookmarked ? prev.filter((id) => id !== item.id) : [...prev, item.id],
+    )
+  }
+
+  const handleAddComment = async (
+    e: FormEvent,
+    item: ProposalWithOwner,
+  ) => {
+    e.preventDefault()
+    if (!commentInput.trim()) return
+
+    if (item.isDb && supabase) {
+      if (!user) {
+        navigate('/login')
+        return
+      }
+      const nickname =
+        (user.user_metadata?.nickname as string | undefined) || '시민'
+      const { data, error } = await supabase
+        .from('proposal_comments')
+        .insert({
+          proposal_id: item.id,
+          user_id: user.id,
+          author_name: nickname,
+          content: commentInput.trim(),
+        })
+        .select()
+        .single()
+
+      if (!error && data) {
+        const added: ProposalComment = {
+          id: data.id,
+          proposalId: data.proposal_id,
+          userId: data.user_id,
+          authorName: data.author_name,
+          content: data.content,
+          createdAt: String(data.created_at).slice(0, 10),
+        }
+        setCommentsByProposal((prev) => ({
+          ...prev,
+          [item.id]: [...(prev[item.id] ?? []), added],
+        }))
+        setProposals((prev) =>
+          prev.map((p) =>
+            p.id === item.id ? { ...p, comments: p.comments + 1 } : p,
+          ),
+        )
+      }
+    } else {
+      const added: ProposalComment = {
+        id: `c-${Date.now()}`,
+        proposalId: item.id,
+        authorName: '나',
+        content: commentInput.trim(),
+        createdAt: '2026-11-20',
+      }
+      setCommentsByProposal((prev) => ({
+        ...prev,
+        [item.id]: [...(prev[item.id] ?? []), added],
+      }))
+    }
+
+    setCommentInput('')
+  }
 
   const visibleProposals = proposals
     .filter((item) => {
@@ -340,9 +522,16 @@ export function ProposalsPage() {
           {visibleProposals.map((item) => {
             const isLiked = likedIds.includes(item.id)
             const isBookmarked = bookmarkedIds.includes(item.id)
-            const likeCount = item.likes + (isLiked ? 1 : 0)
+            const likeCount = item.isDb
+              ? item.likes
+              : item.likes + (isLiked ? 1 : 0)
+            const commentsList = commentsByProposal[item.id] ?? []
+            const commentCount = item.isDb
+              ? item.comments
+              : item.comments + commentsList.length
             const canDelete =
               item.id.startsWith('local-') || (user && item.userId === user.id)
+            const commentsOpen = openCommentId === item.id
 
             return (
               <article key={item.id} className={styles.card}>
@@ -363,9 +552,7 @@ export function ProposalsPage() {
                         type="button"
                         className={`${styles.statBtn} ${isLiked ? styles.liked : ''}`}
                         aria-label="좋아요"
-                        onClick={() =>
-                          setLikedIds((prev) => toggleItem(prev, item.id))
-                        }
+                        onClick={() => handleToggleLike(item)}
                       >
                         <Heart
                           size={19}
@@ -374,10 +561,17 @@ export function ProposalsPage() {
                         <span>{likeCount}</span>
                       </button>
 
-                      <span className={styles.statItem}>
+                      <button
+                        type="button"
+                        className={styles.statBtn}
+                        aria-label="댓글 보기"
+                        onClick={() =>
+                          setOpenCommentId(commentsOpen ? null : item.id)
+                        }
+                      >
                         <MessageCircle size={19} />
-                        <span>{item.comments}</span>
-                      </span>
+                        <span>{commentCount}</span>
+                      </button>
                     </div>
 
                     <div style={{ display: 'flex', gap: '8px' }}>
@@ -395,9 +589,7 @@ export function ProposalsPage() {
                         type="button"
                         className={styles.bookmarkBtn}
                         aria-label="북마크"
-                        onClick={() =>
-                          setBookmarkedIds((prev) => toggleItem(prev, item.id))
-                        }
+                        onClick={() => handleToggleBookmark(item)}
                       >
                         <Bookmark
                           size={19}
@@ -406,6 +598,79 @@ export function ProposalsPage() {
                       </button>
                     </div>
                   </div>
+
+                  {/* 댓글 펼침 영역 */}
+                  {commentsOpen && (
+                    <div
+                      style={{
+                        marginTop: '12px',
+                        paddingTop: '12px',
+                        borderTop: '1px solid var(--color-border-muted)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '8px',
+                      }}
+                    >
+                      {commentsList.length === 0 ? (
+                        <p
+                          style={{
+                            fontSize: '12px',
+                            color: 'var(--color-text-muted)',
+                          }}
+                        >
+                          첫 댓글을 남겨보세요!
+                        </p>
+                      ) : (
+                        commentsList.map((c) => (
+                          <div
+                            key={c.id}
+                            style={{
+                              fontSize: '12.5px',
+                              lineHeight: 1.45,
+                              backgroundColor: '#fafbf8',
+                              padding: '6px 10px',
+                              borderRadius: '8px',
+                            }}
+                          >
+                            <strong>{c.authorName}</strong> · {c.content}
+                          </div>
+                        ))
+                      )}
+                      <form
+                        onSubmit={(e) => handleAddComment(e, item)}
+                        style={{ display: 'flex', gap: '6px' }}
+                      >
+                        <input
+                          type="text"
+                          placeholder="댓글 입력..."
+                          value={commentInput}
+                          onChange={(e) => setCommentInput(e.target.value)}
+                          style={{
+                            flex: 1,
+                            height: '32px',
+                            padding: '0 10px',
+                            border: '1px solid var(--color-border-muted)',
+                            borderRadius: '999px',
+                            fontSize: '12.5px',
+                          }}
+                        />
+                        <button
+                          type="submit"
+                          style={{
+                            padding: '0 12px',
+                            height: '32px',
+                            borderRadius: '999px',
+                            backgroundColor: '#000',
+                            color: '#fff',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                          }}
+                        >
+                          등록
+                        </button>
+                      </form>
+                    </div>
+                  )}
                 </div>
               </article>
             )
