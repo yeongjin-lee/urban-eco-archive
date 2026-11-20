@@ -42,6 +42,7 @@ export function MagazinePage() {
   return (
     <CategoryShowcase
       badge="매거진"
+      backTo={{ to: '/magazine', label: '뒤로가기' }}
       headlineLines={[
         '동네의 일상적인 장소를 관찰하고,',
         '장소에 담긴 사람과',

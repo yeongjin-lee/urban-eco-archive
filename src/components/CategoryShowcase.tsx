@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 import styles from './CategoryShowcase.module.css'
 
 export interface CategoryItem {
@@ -15,6 +15,7 @@ interface CategoryShowcaseProps {
   badge: string
   headlineLines: string[]
   items: CategoryItem[]
+  backTo?: { to: string; label: string }
 }
 
 // 매거진 & 오늘의쉼터가 함께 사용하는 원형 카테고리 슬라이더 컴포넌트
@@ -22,6 +23,7 @@ export function CategoryShowcase({
   badge,
   headlineLines,
   items,
+  backTo,
 }: CategoryShowcaseProps) {
   // 가로 스크롤 영역을 직접 가리키기 위한 ref (좌우 화살표 버튼 클릭 시 이동)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -35,7 +37,33 @@ export function CategoryShowcase({
   return (
     <section className={styles.section}>
       <div className={styles.top}>
-        <span className={styles.badge}>{badge}</span>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            marginBottom: '24px',
+          }}
+        >
+          {backTo && (
+            <Link
+              to={backTo.to}
+              className={styles.badge}
+              style={{
+                marginBottom: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <ArrowLeft size={14} />
+              <span>{backTo.label}</span>
+            </Link>
+          )}
+          <span className={styles.badge} style={{ marginBottom: 0 }}>
+            {badge}
+          </span>
+        </div>
         <h1 className={styles.headline}>
           {headlineLines.map((line, index) => (
             <span key={line}>
