@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Bookmark, Heart, MessageCircle, Search, Trees } from 'lucide-react'
+import { Bookmark, Heart, MapPin, MessageCircle, Search, Trees } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { INITIAL_PROPOSALS } from '../data/proposals'
 import styles from './ProposalsPage.module.css'
 
@@ -66,6 +67,15 @@ export function ProposalsPage() {
           />
           <Search size={18} className={styles.searchIcon} aria-hidden="true" />
         </div>
+
+        <Link
+          to="/proposals/map"
+          className={styles.sortSelect}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+        >
+          <MapPin size={16} />
+          <span>지도에서 보기</span>
+        </Link>
       </div>
 
       {/* 제안 카드 목록 */}

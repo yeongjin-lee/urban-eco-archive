@@ -5,7 +5,9 @@ import { HomePage } from './pages/HomePage'
 import { ContactPage, PrivacyPage, TermsPage } from './pages/LegalPage'
 import { MagazinePage } from './pages/MagazinePage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
+import { ProposalsMapPage } from './pages/ProposalsMapPage'
 import { ProposalsPage } from './pages/ProposalsPage'
+import { ShelterMapPage } from './pages/ShelterMapPage'
 import { ShelterPage } from './pages/ShelterPage'
 
 function App() {
@@ -27,16 +29,9 @@ function App() {
             }
           />
           <Route path="/shelter" element={<ShelterPage />} />
-          <Route
-            path="/shelter/:category"
-            element={
-              <PlaceholderPage
-                title="오늘의쉼터 지도"
-                description="지도 위 핀을 클릭해 쉼터 상세 정보를 보는 화면입니다. (Step 7에서 구현 예정)"
-              />
-            }
-          />
+          <Route path="/shelter/:category" element={<ShelterMapPage />} />
           <Route path="/proposals" element={<ProposalsPage />} />
+          <Route path="/proposals/map" element={<ProposalsMapPage />} />
           <Route
             path="/mypage"
             element={

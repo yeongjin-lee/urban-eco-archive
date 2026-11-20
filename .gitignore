@@ -23,5 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# 환경 변수 (API 키는 GitHub에 올리지 않음)
+.env
+.env.local
+
 # 디자인 시안 PNG (참고용, GitHub에는 올리지 않음)
 design/

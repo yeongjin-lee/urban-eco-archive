@@ -1,0 +1,223 @@
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  min-height: calc(100vh - var(--header-height) - 52px);
+}
+
+.leftPane {
+  padding: 28px 28px 36px 36px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: calc(100vh - var(--header-height) - 52px);
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid var(--color-border);
+}
+
+.boxTitle {
+  display: inline-block;
+  padding: 6px 18px;
+  border: 1.5px solid var(--color-border);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pillAction {
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  background-color: var(--color-bg);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pillAction:hover {
+  background-color: var(--color-primary-tint);
+}
+
+.selectedLocation {
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.dottedRule {
+  margin: 14px 0 18px;
+  border: none;
+  border-top: 3px dotted var(--color-border-muted);
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.spotCard {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 18px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border-muted);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.spotCardActive {
+  background-color: rgba(223, 233, 206, 0.28);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+}
+
+.spotImg {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.spotHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.spotTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.spotDate {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-left: 6px;
+}
+
+.spotCategory {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  text-decoration: underline;
+  color: var(--color-text);
+}
+
+.spotSubtitle {
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.metricTable {
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-serif);
+  font-size: 12px;
+}
+
+.metricTable td {
+  border: 1px solid var(--color-border-muted);
+  padding: 5px 10px;
+}
+
+.metricTable td:first-child {
+  width: 44%;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.proposalTag {
+  display: inline-block;
+  padding: 3px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary-tint);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.proposalLocation {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rightPane {
+  border-left: 1px solid var(--color-border);
+  min-height: 480px;
+}
+
+/* 모바일용 [목록 / 지도] 탭 전환 */
+.mobileTabs {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .mobileTabs {
+    display: flex;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobileTabBtn {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: var(--color-bg);
+  }
+
+  .mobileTabActive {
+    background-color: var(--color-primary-tint);
+  }
+
+  .leftPane {
+    max-height: none;
+    padding: 20px 16px 32px;
+  }
+
+  .rightPane {
+    border-left: none;
+    height: 460px;
+  }
+
+  .hiddenMobile {
+    display: none;
+  }
+
+  .spotCard {
+    grid-template-columns: 1fr;
+  }
+}
