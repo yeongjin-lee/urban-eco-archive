@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import magArchivingImg from '../assets/images/mag-archiving.jpg'
 import magEcologyImg from '../assets/images/mag-ecology.jpg'
@@ -106,7 +107,17 @@ export function MagazineMapHomePage() {
       ) : (
         <section className={splitStyles.leftPane}>
           <div className={splitStyles.topBar}>
-            <h1 className={splitStyles.boxTitle}>매거진</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                type="button"
+                className={splitStyles.pillAction}
+                aria-label="이전 화면으로"
+                onClick={() => setSelectedId(null)}
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <h1 className={splitStyles.boxTitle}>매거진</h1>
+            </div>
             <div className={splitStyles.topActions}>
               <select
                 aria-label="도시 선택"
