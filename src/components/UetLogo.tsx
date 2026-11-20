@@ -1,5 +1,5 @@
-// Canva 시안의 UET 로고 도형 경로를 그대로 SVG로 구현한 컴포넌트
-export function UetLogo({ size = 44 }: { size?: number }) {
+// Canva 시안의 UET 로고 도형 경로와 글자 배치를 그대로 SVG로 구현한 컴포넌트
+export function UetLogo({ size = 46 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -14,32 +14,32 @@ export function UetLogo({ size = 44 }: { size?: number }) {
         fill="#000000"
       />
       <text
-        x="8"
-        y="21"
+        x="5"
+        y="24"
         fill="#ffffff"
-        fontSize="16"
+        fontSize="22"
         fontWeight="700"
-        fontFamily="sans-serif"
+        fontFamily="'Oswald', sans-serif"
       >
         U
       </text>
       <text
         x="19"
-        y="32"
+        y="36"
         fill="#ffffff"
-        fontSize="14"
+        fontSize="19"
         fontWeight="700"
-        fontFamily="sans-serif"
+        fontFamily="'Oswald', sans-serif"
       >
         E
       </text>
       <text
-        x="30"
-        y="43"
+        x="33"
+        y="45"
         fill="#ffffff"
-        fontSize="14"
+        fontSize="18"
         fontWeight="700"
-        fontFamily="sans-serif"
+        fontFamily="'Oswald', sans-serif"
       >
         T
       </text>

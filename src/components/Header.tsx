@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { MapPin, Menu, User, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+import personIcon from '../assets/icons/person.png'
+import locationIcon from '../assets/icons/location.png'
+import instagramIcon from '../assets/icons/instagram.png'
 import { UetLogo } from './UetLogo'
 import styles from './Header.module.css'
 
@@ -49,10 +52,10 @@ export function Header() {
         <div className={styles.actions}>
           <span className={styles.divider} aria-hidden="true" />
           <Link to="/mypage" className={styles.iconBtn} aria-label="마이페이지">
-            <User size={22} strokeWidth={1.8} />
+            <img src={personIcon} alt="" width={24} height={24} />
           </Link>
           <Link to="/shelter" className={styles.iconBtn} aria-label="오늘의쉼터 지도">
-            <MapPin size={22} strokeWidth={1.8} />
+            <img src={locationIcon} alt="" width={26} height={22} />
           </Link>
           <a
             href="https://www.instagram.com/"
@@ -61,21 +64,7 @@ export function Header() {
             className={styles.iconBtn}
             aria-label="인스타그램"
           >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-            </svg>
+            <img src={instagramIcon} alt="" width={24} height={24} />
           </a>
           <button
             type="button"
