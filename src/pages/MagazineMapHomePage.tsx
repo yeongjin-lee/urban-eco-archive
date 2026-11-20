@@ -64,6 +64,7 @@ const MAGAZINE_SPOTS: MagazineSpot[] = [
 
 export function MagazineMapHomePage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedCity, setSelectedCity] = useState('서울 노원구 공릉동')
 
   const selectedSpot =
     MAGAZINE_SPOTS.find((s) => s.id === selectedId) ?? MAGAZINE_SPOTS[0]
@@ -107,6 +108,15 @@ export function MagazineMapHomePage() {
           <div className={splitStyles.topBar}>
             <h1 className={splitStyles.boxTitle}>매거진</h1>
             <div className={splitStyles.topActions}>
+              <select
+                aria-label="도시 선택"
+                className={splitStyles.pillAction}
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+              >
+                <option value="서울 노원구 공릉동">서울 노원구 공릉동</option>
+                <option value="서울 전체">서울 전체</option>
+              </select>
               <Link to="/magazine/categories" className={splitStyles.pillAction}>
                 카테고리별 글 보기
               </Link>
@@ -114,7 +124,7 @@ export function MagazineMapHomePage() {
           </div>
 
           <p className={splitStyles.selectedLocation}>
-            선택한 위치: {selectedSpot.address}
+            선택한 위치 ({selectedCity}): {selectedSpot.address}
           </p>
           <hr className={splitStyles.dottedRule} />
 
@@ -148,6 +158,19 @@ export function MagazineMapHomePage() {
                     <p className={splitStyles.spotSubtitle}>
                       {spot.description}
                     </p>
+                    <Link
+                      to={spot.categoryTo}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        display: 'inline-block',
+                        marginTop: '10px',
+                        fontSize: '12px',
+                        fontWeight: 700,
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      이야기 읽기 →
+                    </Link>
                   </div>
                 </article>
               )
