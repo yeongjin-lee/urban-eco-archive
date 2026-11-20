@@ -1,0 +1,287 @@
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: calc(100vh - var(--header-height) - 52px);
+}
+
+/* 왼쪽 사이드바 */
+.sidebar {
+  border-right: 1px solid var(--color-border);
+  padding: 48px 0 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileBox {
+  padding: 0 36px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.userName {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.userEmail {
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.editProfileBtn {
+  margin-top: 14px;
+  padding: 5px 18px;
+  border: 1px solid var(--color-brown);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--color-brown);
+}
+
+.sideMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.sideItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 36px;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--color-text);
+  text-align: left;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+
+.sideItem:hover {
+  background-color: var(--color-surface-muted);
+}
+
+.sideItemActive {
+  background-color: var(--color-primary-tint);
+  border-top-color: var(--color-border);
+  border-bottom-color: var(--color-border);
+}
+
+/* 오른쪽 메인 영역 */
+.content {
+  padding: 44px 56px 64px;
+}
+
+.contentHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.contentTitle {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.addBtn {
+  padding: 8px 20px;
+  border: 1px solid var(--color-brown);
+  color: var(--color-brown);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.addBtn:hover {
+  background-color: var(--color-brown);
+  color: #ffffff;
+}
+
+.filterTabs {
+  margin-top: 28px;
+  display: flex;
+  gap: 48px;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.filterTab {
+  padding: 0 4px 10px;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+
+.filterTabActive {
+  color: var(--color-text);
+  font-weight: 700;
+  border-bottom-color: var(--color-green-deep);
+}
+
+/* 기록 추가 폼 */
+.addForm {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background-color: #fafbf8;
+  display: grid;
+  grid-template-columns: 140px 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.input,
+.select {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border-muted);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  background-color: #ffffff;
+}
+
+.submitBtn {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-green-dark);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* 기록 목록 */
+.recordList {
+  display: flex;
+  flex-direction: column;
+}
+
+.recordRow {
+  display: grid;
+  grid-template-columns: 190px 1fr auto;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--color-border-muted);
+  align-items: center;
+}
+
+.recordImg {
+  width: 190px;
+  height: 118px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.recordCat {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.recordTitle {
+  margin-top: 6px;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.recordMeta {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.recordLoc {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bookmarkBtn {
+  padding: 8px;
+  color: var(--color-green-deep);
+}
+
+.emptyPanel {
+  margin-top: 36px;
+  padding: 36px;
+  border: 1px dashed var(--color-border-muted);
+  border-radius: 14px;
+  text-align: center;
+  font-family: var(--font-serif);
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 28px 0 0;
+  }
+
+  .sideMenu {
+    flex-direction: row;
+    overflow-x: auto;
+    border-top: 1px solid var(--color-border-muted);
+  }
+
+  .sideItem {
+    padding: 12px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .content {
+    padding: 28px 16px 48px;
+  }
+
+  .filterTabs {
+    gap: 20px;
+  }
+
+  .addForm {
+    grid-template-columns: 1fr;
+  }
+
+  .recordRow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .recordImg {
+    width: 100%;
+    height: 170px;
+  }
+}

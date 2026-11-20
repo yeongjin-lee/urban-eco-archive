@@ -3,8 +3,9 @@ import { Layout } from './components/Layout'
 import { AboutPage } from './pages/AboutPage'
 import { HomePage } from './pages/HomePage'
 import { ContactPage, PrivacyPage, TermsPage } from './pages/LegalPage'
+import { MagazineDetailPage } from './pages/MagazineDetailPage'
 import { MagazinePage } from './pages/MagazinePage'
-import { PlaceholderPage } from './pages/PlaceholderPage'
+import { MyPage } from './pages/MyPage'
 import { ProposalsMapPage } from './pages/ProposalsMapPage'
 import { ProposalsPage } from './pages/ProposalsPage'
 import { ShelterMapPage } from './pages/ShelterMapPage'
@@ -19,28 +20,12 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/magazine" element={<MagazinePage />} />
-          <Route
-            path="/magazine/:category"
-            element={
-              <PlaceholderPage
-                title="매거진 상세"
-                description="산책 코스, 공간의 기억, 생태이야기 상세 화면입니다. (Step 8에서 구현 예정)"
-              />
-            }
-          />
+          <Route path="/magazine/:category" element={<MagazineDetailPage />} />
           <Route path="/shelter" element={<ShelterPage />} />
           <Route path="/shelter/:category" element={<ShelterMapPage />} />
           <Route path="/proposals" element={<ProposalsPage />} />
           <Route path="/proposals/map" element={<ProposalsMapPage />} />
-          <Route
-            path="/mypage"
-            element={
-              <PlaceholderPage
-                title="마이페이지"
-                description="내 기록, 내 제안, 즐겨찾기를 모아보는 공간입니다."
-              />
-            }
-          />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/terms" element={<TermsPage />} />

@@ -1,0 +1,290 @@
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 32px 48px 72px;
+}
+
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.backLink:hover {
+  background-color: var(--color-primary-tint);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tabPill {
+  padding: 6px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tabActive {
+  background-color: var(--color-primary-tint);
+}
+
+/* 1) 산책 코스 레이아웃 */
+.walkingHero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+}
+
+.walkingIntroCard {
+  background-color: var(--color-primary-tint);
+  border: 1px solid var(--color-green-soft);
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.walkingSmall {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.walkingPlace {
+  margin-top: 6px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.walkingRoute {
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.walkingMapBox {
+  border: 1px solid var(--color-border);
+  height: 390px;
+  overflow: hidden;
+}
+
+.courseStepper {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.courseBtn {
+  padding: 14px 10px;
+  border: 1px solid var(--color-border-muted);
+  border-radius: 12px;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.courseBtnActive {
+  background-color: var(--color-primary-tint);
+  border-color: var(--color-border);
+}
+
+.courseNum {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-green-pin);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.courseBtnTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-green-dark);
+}
+
+.courseDetailBox {
+  margin-top: 24px;
+  padding: 24px 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+}
+
+.courseDetailTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.courseDetailDesc {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.courseMetaList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 16px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  align-content: center;
+}
+
+/* 2) 공릉동의 역사 (타임라인) */
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pageLead {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  margin-bottom: 32px;
+}
+
+.timelineGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.timelineCard {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 24px;
+  background-color: var(--color-bg);
+}
+
+.timelineEra {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-green-dark);
+}
+
+.timelineSub {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--color-brown);
+  margin-top: 2px;
+}
+
+.timelineBody {
+  margin-top: 12px;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+/* 3) 생태이야기 (3열 카드) */
+.storyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.storyCard {
+  border: 1px solid var(--color-border-muted);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.storyImg {
+  width: 100%;
+  height: 185px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.storyTitle {
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.storyEn {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
+
+.storyPara {
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  margin-top: 8px;
+}
+
+@media (max-width: 960px) {
+  .walkingHero {
+    grid-template-columns: 1fr;
+  }
+
+  .courseStepper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .courseDetailBox,
+  .timelineGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .storyGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 16px 48px;
+  }
+
+  .courseStepper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .storyGrid {
+    grid-template-columns: 1fr;
+  }
+}
