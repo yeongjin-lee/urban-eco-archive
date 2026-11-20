@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import propParkImg from '../assets/images/prop-park.jpg'
 import { useAuth } from '../contexts/AuthContext'
 import { INITIAL_PROPOSALS, type Proposal } from '../data/proposals'
+import { uploadEcoImage } from '../lib/storage'
 import { supabase } from '../lib/supabase'
 import styles from './ProposalsPage.module.css'
 
@@ -39,6 +40,8 @@ export function ProposalsPage() {
   const [newTitle, setNewTitle] = useState('')
   const [newDesc, setNewDesc] = useState('')
   const [newLocation, setNewLocation] = useState('')
+  const [newFile, setNewFile] = useState<File | null>(null)
+  const [submitting, setSubmitting] = useState(false)
 
   // Supabase가 연결되어 있으면 실제 DB에서 녹색제안 목록 불러오기
   useEffect(() => {
@@ -56,7 +59,7 @@ export function ProposalsPage() {
           title: row.title,
           description: row.description,
           location: row.location,
-          image: propParkImg,
+          image: row.image_url || propParkImg,
           likes: row.likes_count,
           comments: row.comments_count,
           createdAt: String(row.created_at).slice(0, 10),
@@ -75,9 +78,13 @@ export function ProposalsPage() {
 
   const handleCreateProposal = async (e: FormEvent) => {
     e.preventDefault()
-    if (!newTitle.trim() || !newDesc.trim()) return
+    if (!newTitle.trim() || !newDesc.trim() || submitting) return
+    setSubmitting(true)
 
     if (supabase && user) {
+      const uploadedUrl = newFile
+        ? await uploadEcoImage(newFile, user.id)
+        : null
       const nickname =
         (user.user_metadata?.nickname as string | undefined) || '시민 기록자'
       const { data, error } = await supabase
@@ -89,6 +96,7 @@ export function ProposalsPage() {
           title: newTitle.trim(),
           description: newDesc.trim(),
           location: newLocation.trim() || '서울 노원구 공릉동',
+          image_url: uploadedUrl,
         })
         .select()
         .single()
@@ -102,7 +110,7 @@ export function ProposalsPage() {
             title: data.title,
             description: data.description,
             location: data.location,
-            image: propParkImg,
+            image: data.image_url || propParkImg,
             likes: 0,
             comments: 0,
             createdAt: String(data.created_at).slice(0, 10),
@@ -118,7 +126,7 @@ export function ProposalsPage() {
           title: newTitle.trim(),
           description: newDesc.trim(),
           location: newLocation.trim() || '서울 노원구 공릉동',
-          image: propParkImg,
+          image: newFile ? URL.createObjectURL(newFile) : propParkImg,
           likes: 0,
           comments: 0,
           createdAt: '2026-11-20',
@@ -130,6 +138,8 @@ export function ProposalsPage() {
     setNewTitle('')
     setNewDesc('')
     setNewLocation('')
+    setNewFile(null)
+    setSubmitting(false)
     setShowForm(false)
   }
 
@@ -288,8 +298,25 @@ export function ProposalsPage() {
               fontFamily: 'inherit',
             }}
           />
+          <label
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              fontSize: '13px',
+              color: 'var(--color-text-muted)',
+            }}
+          >
+            <span>사진 첨부 (선택):</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
+            />
+          </label>
           <button
             type="submit"
+            disabled={submitting}
             style={{
               justifySelf: 'end',
               padding: '10px 22px',
@@ -300,7 +327,7 @@ export function ProposalsPage() {
               fontSize: '13px',
             }}
           >
-            제안 등록하기
+            {submitting ? '업로드 중...' : '제안 등록하기'}
           </button>
         </form>
       )}

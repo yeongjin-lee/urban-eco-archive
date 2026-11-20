@@ -15,6 +15,7 @@ import aboutForestImg from '../assets/images/about-forest.jpg'
 import magMemoryImg from '../assets/images/mag-memory.jpg'
 import propStreamImg from '../assets/images/prop-stream.jpg'
 import { useAuth } from '../contexts/AuthContext'
+import { uploadEcoImage } from '../lib/storage'
 import { supabase } from '../lib/supabase'
 import styles from './MyPage.module.css'
 
@@ -75,6 +76,8 @@ export function MyPage() {
   const [newCat, setNewCat] = useState<Exclude<RecordCategory, '전체'>>('식물')
   const [newTitle, setNewTitle] = useState('')
   const [newLocation, setNewLocation] = useState('')
+  const [newFile, setNewFile] = useState<File | null>(null)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (!supabase || !user) return
@@ -92,7 +95,7 @@ export function MyPage() {
             title: row.title,
             date: String(row.created_at).slice(0, 10).replaceAll('-', '.'),
             location: row.location,
-            image: aboutForestImg,
+            image: row.image_url || aboutForestImg,
             bookmarked: row.bookmarked,
           })),
         )
@@ -129,9 +132,13 @@ export function MyPage() {
 
   const handleAddRecord = async (e: FormEvent) => {
     e.preventDefault()
-    if (!newTitle.trim()) return
+    if (!newTitle.trim() || submitting) return
+    setSubmitting(true)
 
     if (supabase && user) {
+      const uploadedUrl = newFile
+        ? await uploadEcoImage(newFile, user.id)
+        : null
       const { data, error } = await supabase
         .from('eco_records')
         .insert({
@@ -139,6 +146,7 @@ export function MyPage() {
           category: newCat,
           title: newTitle.trim(),
           location: newLocation.trim() || '서울 노원구 공릉동',
+          image_url: uploadedUrl,
         })
         .select()
         .single()
@@ -151,7 +159,7 @@ export function MyPage() {
             title: data.title,
             date: String(data.created_at).slice(0, 10).replaceAll('-', '.'),
             location: data.location,
-            image: aboutForestImg,
+            image: data.image_url || aboutForestImg,
             bookmarked: data.bookmarked,
           },
           ...prev,
@@ -165,7 +173,7 @@ export function MyPage() {
           title: newTitle.trim(),
           date: '2026.11.20',
           location: newLocation.trim() || '서울 노원구 공릉동',
-          image: aboutForestImg,
+          image: newFile ? URL.createObjectURL(newFile) : aboutForestImg,
           bookmarked: false,
         },
         ...prev,
@@ -174,6 +182,8 @@ export function MyPage() {
 
     setNewTitle('')
     setNewLocation('')
+    setNewFile(null)
+    setSubmitting(false)
     setShowAddForm(false)
   }
 
@@ -323,8 +333,18 @@ export function MyPage() {
                   value={newLocation}
                   onChange={(e) => setNewLocation(e.target.value)}
                 />
-                <button type="submit" className={styles.submitBtn}>
-                  저장
+                <input
+                  type="file"
+                  accept="image/*"
+                  aria-label="사진 첨부"
+                  onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
+                />
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={submitting}
+                >
+                  {submitting ? '저장 중...' : '저장'}
                 </button>
               </form>
             )}

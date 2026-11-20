@@ -7,6 +7,7 @@ import styles from './MapSplitPage.module.css'
 export function ShelterMapPage() {
   const { category } = useParams<{ category?: string }>()
   const [mobileTab, setMobileTab] = useState<'map' | 'list'>('list')
+  const [sortBy, setSortBy] = useState<'default' | 'score'>('default')
 
   // 카테고리 주소(/shelter/breath 등)에 맞게 필터링 (없으면 전체 표시)
   const spots =
@@ -14,7 +15,21 @@ export function ShelterMapPage() {
       ? SHELTER_SPOTS.filter((s) => s.category === category)
       : SHELTER_SPOTS
 
-  const displaySpots = spots.length > 0 ? spots : SHELTER_SPOTS
+  const baseSpots = spots.length > 0 ? spots : SHELTER_SPOTS
+  const displaySpots =
+    sortBy === 'score'
+      ? [...baseSpots].sort((a, b) => {
+          const scoreA = parseInt(
+            a.metrics.find((m) => m.label === '경관점수')?.value ?? '0',
+            10,
+          )
+          const scoreB = parseInt(
+            b.metrics.find((m) => m.label === '경관점수')?.value ?? '0',
+            10,
+          )
+          return scoreB - scoreA
+        })
+      : baseSpots
   const [selectedId, setSelectedId] = useState<string>(displaySpots[0]?.id ?? '')
 
   const selectedSpot =
@@ -54,6 +69,17 @@ export function ShelterMapPage() {
         <div className={styles.topBar}>
           <h1 className={styles.boxTitle}>오늘의쉼터</h1>
           <div className={styles.topActions}>
+            <select
+              aria-label="정렬 기준"
+              className={styles.pillAction}
+              value={sortBy}
+              onChange={(e) =>
+                setSortBy(e.target.value as 'default' | 'score')
+              }
+            >
+              <option value="default">기본순</option>
+              <option value="score">추천 점수순</option>
+            </select>
             <Link to="/shelter" className={styles.pillAction}>
               카테고리
             </Link>
