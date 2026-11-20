@@ -5,6 +5,7 @@ import { HomePage } from './pages/HomePage'
 import { ContactPage, PrivacyPage, TermsPage } from './pages/LegalPage'
 import { MagazinePage } from './pages/MagazinePage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
+import { ProposalsPage } from './pages/ProposalsPage'
 import { ShelterPage } from './pages/ShelterPage'
 
 function App() {
@@ -35,15 +36,7 @@ function App() {
               />
             }
           />
-          <Route
-            path="/proposals"
-            element={
-              <PlaceholderPage
-                title="녹색제안"
-                description="시민들이 직접 기록하고 제안하는 녹색 아이디어 공간입니다. (Step 6에서 구현 예정)"
-              />
-            }
-          />
+          <Route path="/proposals" element={<ProposalsPage />} />
           <Route
             path="/mypage"
             element={
