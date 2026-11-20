@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { KakaoMapView, type MapPin } from '../components/KakaoMapView'
+import { EcoMapView, type MapPin } from '../components/EcoMapView'
 import { SHELTER_SPOTS } from '../data/shelters'
 import styles from './MapSplitPage.module.css'
 
@@ -116,7 +116,7 @@ export function ShelterMapPage() {
       <aside
         className={`${styles.rightPane} ${mobileTab === 'list' ? styles.hiddenMobile : ''}`}
       >
-        <KakaoMapView
+        <EcoMapView
           pins={pins}
           selectedPinId={selectedSpot?.id ?? null}
           onSelectPin={(id) => {

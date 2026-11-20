@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { MapPin as MapPinIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { KakaoMapView, type MapPin } from '../components/KakaoMapView'
+import { EcoMapView, type MapPin } from '../components/EcoMapView'
 import { INITIAL_PROPOSALS } from '../data/proposals'
 import styles from './MapSplitPage.module.css'
 
@@ -100,7 +100,7 @@ export function ProposalsMapPage() {
       <aside
         className={`${styles.rightPane} ${mobileTab === 'list' ? styles.hiddenMobile : ''}`}
       >
-        <KakaoMapView
+        <EcoMapView
           pins={pins}
           selectedPinId={selectedProposal?.id ?? null}
           onSelectPin={(id) => {
