@@ -10,7 +10,6 @@ import {
   Trees,
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import propParkImg from '../assets/images/prop-park.jpg'
 import { useAuth } from '../contexts/AuthContext'
 import { INITIAL_PROPOSALS, type Proposal } from '../data/proposals'
 import { uploadEcoImage } from '../lib/storage'
@@ -116,7 +115,7 @@ export function ProposalsPage() {
         title: row.title,
         description: row.description,
         location: row.location,
-        image: row.image_url || propParkImg,
+        image: row.image_url || '',
         likes: likeCountMap[row.id] ?? 0,
         comments: groupedComments[row.id]?.length ?? 0,
         createdAt: String(row.created_at).slice(0, 10),
@@ -184,7 +183,7 @@ export function ProposalsPage() {
           title: data.title,
           description: data.description,
           location: data.location,
-          image: data.image_url || propParkImg,
+          image: data.image_url || '',
           likes: 0,
           comments: 0,
           createdAt: String(data.created_at).slice(0, 10),
@@ -199,7 +198,7 @@ export function ProposalsPage() {
           title: newTitle.trim(),
           description: newDesc.trim(),
           location: newLocation.trim() || '서울 노원구 공릉동',
-          image: newFile ? URL.createObjectURL(newFile) : propParkImg,
+          image: newFile ? URL.createObjectURL(newFile) : '',
           likes: 0,
           comments: 0,
           createdAt: '2026-11-20',
@@ -546,11 +545,27 @@ export function ProposalsPage() {
 
             return (
               <article key={item.id} className={styles.card}>
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className={styles.thumb}
-                />
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className={styles.thumb}
+                  />
+                ) : (
+                  <div
+                    className={styles.thumb}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: '#f3f5ef',
+                      color: 'var(--color-text-muted)',
+                      fontSize: '12px',
+                    }}
+                  >
+                    사진 없음
+                  </div>
+                )}
 
                 <div className={styles.cardBody}>
                   <span className={styles.tag}>{item.tag}</span>

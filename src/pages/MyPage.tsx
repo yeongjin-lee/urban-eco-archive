@@ -95,7 +95,7 @@ export function MyPage() {
             title: row.title,
             date: String(row.created_at).slice(0, 10).replaceAll('-', '.'),
             location: row.location,
-            image: row.image_url || aboutForestImg,
+            image: row.image_url || '',
             bookmarked: row.bookmarked,
           })),
         )
@@ -159,7 +159,7 @@ export function MyPage() {
             title: data.title,
             date: String(data.created_at).slice(0, 10).replaceAll('-', '.'),
             location: data.location,
-            image: data.image_url || aboutForestImg,
+            image: data.image_url || '',
             bookmarked: data.bookmarked,
           },
           ...prev,
@@ -173,7 +173,7 @@ export function MyPage() {
           title: newTitle.trim(),
           date: '2026.11.20',
           location: newLocation.trim() || '서울 노원구 공릉동',
-          image: newFile ? URL.createObjectURL(newFile) : aboutForestImg,
+          image: newFile ? URL.createObjectURL(newFile) : '',
           bookmarked: false,
         },
         ...prev,
@@ -373,11 +373,27 @@ export function MyPage() {
               <div className={styles.recordList}>
                 {visibleRecords.map((rec) => (
                   <article key={rec.id} className={styles.recordRow}>
-                    <img
-                      src={rec.image}
-                      alt={rec.title}
-                      className={styles.recordImg}
-                    />
+                    {rec.image ? (
+                      <img
+                        src={rec.image}
+                        alt={rec.title}
+                        className={styles.recordImg}
+                      />
+                    ) : (
+                      <div
+                        className={styles.recordImg}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#f3f5ef',
+                          color: 'var(--color-text-muted)',
+                          fontSize: '12px',
+                        }}
+                      >
+                        사진 없음
+                      </div>
+                    )}
                     <div>
                       <p className={styles.recordCat}>{rec.category}</p>
                       <h3 className={styles.recordTitle}>{rec.title}</h3>
@@ -438,11 +454,27 @@ export function MyPage() {
                 .filter((r) => r.bookmarked)
                 .map((rec) => (
                   <article key={rec.id} className={styles.recordRow}>
-                    <img
-                      src={rec.image}
-                      alt={rec.title}
-                      className={styles.recordImg}
-                    />
+                    {rec.image ? (
+                      <img
+                        src={rec.image}
+                        alt={rec.title}
+                        className={styles.recordImg}
+                      />
+                    ) : (
+                      <div
+                        className={styles.recordImg}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#f3f5ef',
+                          color: 'var(--color-text-muted)',
+                          fontSize: '12px',
+                        }}
+                      >
+                        사진 없음
+                      </div>
+                    )}
                     <div>
                       <p className={styles.recordCat}>{rec.category}</p>
                       <h3 className={styles.recordTitle}>{rec.title}</h3>
