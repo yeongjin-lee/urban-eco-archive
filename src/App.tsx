@@ -3,7 +3,9 @@ import { Layout } from './components/Layout'
 import { AboutPage } from './pages/AboutPage'
 import { HomePage } from './pages/HomePage'
 import { ContactPage, PrivacyPage, TermsPage } from './pages/LegalPage'
+import { MagazinePage } from './pages/MagazinePage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
+import { ShelterPage } from './pages/ShelterPage'
 
 function App() {
   return (
@@ -13,21 +15,23 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/magazine" element={<MagazinePage />} />
           <Route
-            path="/magazine"
+            path="/magazine/:category"
             element={
               <PlaceholderPage
-                title="매거진"
-                description="동네의 일상적인 장소를 관찰하고, 장소에 담긴 사람과 자연의 이야기를 수집합니다. (Step 5에서 구현 예정)"
+                title="매거진 상세"
+                description="산책 코스, 공간의 기억, 생태이야기 상세 화면입니다. (Step 8에서 구현 예정)"
               />
             }
           />
+          <Route path="/shelter" element={<ShelterPage />} />
           <Route
-            path="/shelter"
+            path="/shelter/:category"
             element={
               <PlaceholderPage
-                title="오늘의쉼터"
-                description="일상 속 잠시 쉬어갈 수 있는 공간과 작은 쉼의 순간들을 소개합니다. (Step 5에서 구현 예정)"
+                title="오늘의쉼터 지도"
+                description="지도 위 핀을 클릭해 쉼터 상세 정보를 보는 화면입니다. (Step 7에서 구현 예정)"
               />
             }
           />
