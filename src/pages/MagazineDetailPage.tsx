@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Link, NavLink, useParams } from 'react-router-dom'
+import aboutForestImg from '../assets/images/about-forest.jpg'
+import homeHeroImg from '../assets/images/home-hero.jpg'
+import magArchivingImg from '../assets/images/mag-archiving.jpg'
+import magMemoryImg from '../assets/images/mag-memory.jpg'
 import memoryHeroImg from '../assets/images/memory-hero.jpg'
 import propParkImg from '../assets/images/prop-park.jpg'
 import propStreetImg from '../assets/images/prop-street.jpg'
+import shelterQuietImg from '../assets/images/shelter-quiet.jpg'
 import shelterRestImg from '../assets/images/shelter-rest.jpg'
 import shelterWalkImg from '../assets/images/shelter-walk.jpg'
 import { EcoMapView, type MapPin } from '../components/EcoMapView'
@@ -133,10 +138,10 @@ export function MagazineDetailPage() {
           <p className={styles.memoryLead}>Let’s turn over a local leaf.</p>
 
           <div className={styles.memoryIndexList}>
-            <a href="#history-section" className={styles.memoryIndexRow}>
+            <Link to="/magazine/history" className={styles.memoryIndexRow}>
               <ArrowRight size={16} />
               <span>공릉동의 역사, 시간을 거쳐온 우리의 동네 이야기</span>
-            </a>
+            </Link>
             <Link to="/magazine/archiving" className={styles.memoryIndexRow}>
               <ArrowRight size={16} />
               <span>주민들이 기억하는 공릉동의 이야기</span>
@@ -152,7 +157,7 @@ export function MagazineDetailPage() {
           </div>
 
           <div className={styles.memoryFourGrid}>
-            <article className={styles.memoryCol}>
+            <Link to="/magazine/history" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>공릉동의 역사</h2>
               <img
                 src={shelterWalkImg}
@@ -163,7 +168,7 @@ export function MagazineDetailPage() {
                 익숙한 골목 속 숨겨진 풍경을 발견하는 동네 산책 기록, 천천히
                 걷다 보면 만나는 공릉동만의 이야기들
               </p>
-            </article>
+            </Link>
             <article className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>주민들의 추억</h2>
               <img
@@ -204,17 +209,49 @@ export function MagazineDetailPage() {
             </article>
           </div>
 
-          <h2
-            id="history-section"
-            className={styles.pageTitle}
-            style={{ fontSize: '24px', marginBottom: '20px' }}
+          <h2 className={styles.memoryCircleTitle}>공릉동의 역사</h2>
+          <div className={styles.memoryCircleGrid}>
+            {[
+              magArchivingImg,
+              homeHeroImg,
+              propParkImg,
+              aboutForestImg,
+              shelterRestImg,
+              shelterWalkImg,
+              shelterQuietImg,
+              magMemoryImg,
+            ].map((imgSrc, idx) => (
+              <Link key={idx} to="/magazine/history">
+                <img
+                  src={imgSrc}
+                  alt={`공릉동 기록 ${idx + 1}`}
+                  className={styles.memoryCircleItem}
+                />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 2-1. 공릉동의 역사 상세 */}
+      {category === 'history' && (
+        <div>
+          <Link
+            to="/magazine/memory"
+            className={styles.backLink}
+            style={{ marginBottom: '20px' }}
           >
-            공릉동의 역사
-          </h2>
+            <ArrowLeft size={16} />
+            <span>공간의 기억으로 돌아가기</span>
+          </Link>
+          <h1 className={styles.pageTitle}>공릉동의 역사</h1>
+          <p className={styles.pageLead}>
+            시간의 흐름 속에서 공릉동의 자연과 마을이 어떻게 변해왔는지 기록합니다.
+          </p>
           <div className={styles.timelineGrid}>
             {GONGNEUNG_HISTORY.map((item) => (
               <article key={item.era} className={styles.timelineCard}>
-                <h3 className={styles.timelineEra}>{item.era}</h3>
+                <h2 className={styles.timelineEra}>{item.era}</h2>
                 <p className={styles.timelineSub}>{item.subtitle}</p>
                 <p className={styles.timelineBody}>{item.body}</p>
               </article>
