@@ -6,6 +6,7 @@ import { HomePage } from './pages/HomePage'
 import { ContactPage, PrivacyPage, TermsPage } from './pages/LegalPage'
 import { LoginPage } from './pages/LoginPage'
 import { MagazineDetailPage } from './pages/MagazineDetailPage'
+import { MagazineMapHomePage } from './pages/MagazineMapHomePage'
 import { MagazinePage } from './pages/MagazinePage'
 import { MyPage } from './pages/MyPage'
 import { ProposalsMapPage } from './pages/ProposalsMapPage'
@@ -22,7 +23,8 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/magazine" element={<MagazinePage />} />
+            <Route path="/magazine" element={<MagazineMapHomePage />} />
+            <Route path="/magazine/categories" element={<MagazinePage />} />
             <Route
               path="/magazine/:category"
               element={<MagazineDetailPage />}

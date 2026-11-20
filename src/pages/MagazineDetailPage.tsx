@@ -39,9 +39,9 @@ export function MagazineDetailPage() {
     <section className={styles.page}>
       {/* 상단 뒤로가기 + 카테고리 탭 */}
       <div className={styles.topNav}>
-        <Link to="/magazine" className={styles.backLink}>
+        <Link to="/magazine/categories" className={styles.backLink}>
           <ArrowLeft size={16} />
-          <span>매거진 전체</span>
+          <span>카테고리 전체</span>
         </Link>
 
         <div className={styles.tabs}>
@@ -99,33 +99,6 @@ export function MagazineDetailPage() {
                 </button>
               )
             })}
-          </div>
-
-          <div className={styles.courseDetailBox}>
-            <div>
-              <h2 className={styles.courseDetailTitle}>
-                {activeCourse.number}. {activeCourse.title}
-              </h2>
-              <p className={styles.courseDetailDesc}>{activeCourse.description}</p>
-            </div>
-            <div className={styles.courseMetaList}>
-              <div>
-                <strong>출발지</strong>
-                <p>{activeCourse.start}</p>
-              </div>
-              <div>
-                <strong>도착지</strong>
-                <p>{activeCourse.end}</p>
-              </div>
-              <div>
-                <strong>거리</strong>
-                <p>{activeCourse.distance}</p>
-              </div>
-              <div>
-                <strong>소요 시간</strong>
-                <p>{activeCourse.duration}</p>
-              </div>
-            </div>
           </div>
         </div>
       )}

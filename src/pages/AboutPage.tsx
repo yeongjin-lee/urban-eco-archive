@@ -1,4 +1,4 @@
-import { BookOpen } from 'lucide-react'
+import aboutBookIcon from '../assets/icons/about-book.png'
 import aboutForestImg from '../assets/images/about-forest.jpg'
 import aboutMapIcon from '../assets/icons/about-map.png'
 import aboutDocIcon from '../assets/icons/about-doc.png'
@@ -34,7 +34,7 @@ export function AboutPage() {
       <div className={styles.features}>
         <article className={styles.featureCard}>
           <div className={styles.featureHead}>
-            <BookOpen size={36} strokeWidth={1.6} aria-hidden="true" />
+            <img src={aboutBookIcon} alt="" className={styles.featureIcon} />
             <h2 className={styles.featureTitle}>데이터 기록</h2>
           </div>
           <p className={styles.featureDesc}>
