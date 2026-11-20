@@ -1,0 +1,38 @@
+/* ==========================================================================
+   디자인 시스템 변수 (Canva 시안에서 추출한 실제 색상 · 글꼴 · 간격)
+   나중에 디자인팀에서 폰트나 색상을 바꾸고 싶으면 이 파일만 수정하면 전체에 반영됩니다.
+   ========================================================================== */
+
+:root {
+  /* 색상 (Colors) */
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-text-muted: #545454;
+  --color-text-subtle: #737373;
+
+  --color-primary-tint: #dfe9ce;   /* 활성 메뉴, 태그 연두색 배경 */
+  --color-green-dark: #3f4d32;     /* 진초록 포인트 텍스트 */
+  --color-green-pin: #5e7a2d;      /* 녹색제안 지도 핀 */
+  --color-green-deep: #374440;     /* 홈 메인 제목 */
+  --color-green-soft: #92b87f;     /* 연한 초록 포인트 */
+
+  --color-teal: #0097b2;           /* 오늘의쉼터 지도 핀 */
+  --color-brown: #9f8d76;          /* '기록 시작하기', '프로필수정' 버튼 */
+
+  --color-border: #000000;         /* 기본 1px 검정 테두리 */
+  --color-border-muted: #a6a6a6;   /* 카드/보조 테두리 */
+  --color-surface-muted: #f5f5f5;
+
+  /* 글꼴 (Typography) */
+  --font-sans: 'Noto Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', sans-serif;
+  --font-serif: 'Noto Serif KR', 'Batang', Georgia, serif;
+
+  /* 둥근 모서리 (Border Radius) */
+  --radius-pill: 999px;            /* 상단 메뉴 알약 모양 */
+  --radius-card: 16px;
+  --radius-sm: 4px;
+
+  /* 레이아웃 크기 */
+  --max-width: 1366px;
+  --header-height: 92px;
+}

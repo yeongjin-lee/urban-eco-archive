@@ -1,0 +1,159 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inner {
+  max-width: var(--max-width);
+  height: var(--header-height);
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* 왼쪽 로고 영역 */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brandTitle {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brandSub {
+  font-size: 12px;
+  color: var(--color-text);
+  margin-top: 2px;
+}
+
+/* 가운데 알약형 메뉴 */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  height: 34px;
+  padding: 0 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.navPill:hover {
+  background-color: var(--color-surface-muted);
+}
+
+.navPillActive {
+  background-color: var(--color-primary-tint);
+}
+
+.navPillActive:hover {
+  background-color: var(--color-primary-tint);
+}
+
+/* 오른쪽 아이콘 & 햄버거 */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.divider {
+  width: 1px;
+  height: 28px;
+  background-color: var(--color-border);
+  margin-right: 4px;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transition: background-color 0.15s ease;
+}
+
+.iconBtn:hover {
+  background-color: var(--color-surface-muted);
+}
+
+/* 모바일/전체 메뉴 드로어 */
+.drawer {
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  padding: 16px 24px 24px;
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drawerLink {
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.drawerLinkActive {
+  background-color: var(--color-primary-tint);
+}
+
+/* 반응형: 태블릿/모바일 (960px 이하) */
+@media (max-width: 960px) {
+  .inner {
+    height: 72px;
+    padding: 0 16px;
+  }
+
+  .brandTitle {
+    font-size: 20px;
+  }
+
+  .brandSub {
+    font-size: 10px;
+  }
+
+  .nav,
+  .divider {
+    display: none;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+}
