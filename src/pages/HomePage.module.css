@@ -1,0 +1,92 @@
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  gap: 48px;
+  min-height: calc(100vh - var(--header-height) - 52px);
+}
+
+.copy {
+  padding: 32px 0 32px 24px;
+}
+
+.title {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-green-deep);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: 24px;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.cta {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 10px 26px;
+  border: 1px solid var(--color-brown);
+  color: var(--color-brown);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cta:hover {
+  background-color: var(--color-brown);
+  color: #ffffff;
+}
+
+.media {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.heroImg {
+  width: 100%;
+  max-width: 620px;
+  height: 100%;
+  max-height: 620px;
+  object-fit: cover;
+}
+
+/* 모바일 반응형: 사진을 위로, 문구를 아래로 */
+@media (max-width: 860px) {
+  .section {
+    grid-template-columns: 1fr;
+    padding: 24px 20px 40px;
+    gap: 28px;
+    min-height: auto;
+  }
+
+  .media {
+    order: -1;
+  }
+
+  .heroImg {
+    max-height: 340px;
+  }
+
+  .copy {
+    padding: 0;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    margin-top: 16px;
+  }
+}
