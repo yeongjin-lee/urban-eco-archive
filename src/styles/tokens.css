@@ -32,7 +32,7 @@
   --radius-card: 16px;
   --radius-sm: 4px;
 
-  /* 레이아웃 크기 */
-  --max-width: 1366px;
+  /* 레이아웃 크기 (큰 모니터에서도 화면 폭에 맞춰 넓어지도록 100% 사용) */
+  --max-width: 100%;
   --header-height: 92px;
 }
