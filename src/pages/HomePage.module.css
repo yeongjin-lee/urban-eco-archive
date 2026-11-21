@@ -6,7 +6,8 @@
   grid-template-columns: 1fr 1.15fr;
   align-items: stretch;
   gap: 48px;
-  min-height: calc(100vh - var(--header-height) - 52px);
+  height: calc(100dvh - var(--header-height) - 52px);
+  min-height: 440px;
 }
 
 .copy {
@@ -48,6 +49,8 @@
 
 .media {
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
   display: flex;
 }
 
@@ -63,6 +66,7 @@
     grid-template-columns: 1fr;
     padding: 24px 20px 40px;
     gap: 28px;
+    height: auto;
     min-height: auto;
   }
 
