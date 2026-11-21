@@ -11,7 +11,11 @@ import {
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { INITIAL_PROPOSALS, type Proposal } from '../data/proposals'
+import {
+  INITIAL_COMMENTS,
+  INITIAL_PROPOSALS,
+  type Proposal,
+} from '../data/proposals'
 import { uploadEcoImage } from '../lib/storage'
 import { supabase } from '../lib/supabase'
 import styles from './ProposalsPage.module.css'
@@ -42,9 +46,8 @@ export function ProposalsPage() {
   const [sortBy, setSortBy] = useState<SortOption>('latest')
   const [likedIds, setLikedIds] = useState<string[]>([])
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([])
-  const [commentsByProposal, setCommentsByProposal] = useState<
-    Record<string, ProposalComment[]>
-  >({})
+  const [commentsByProposal, setCommentsByProposal] =
+    useState<Record<string, ProposalComment[]>>(INITIAL_COMMENTS)
   const [openCommentId, setOpenCommentId] = useState<string | null>(null)
   const [commentInput, setCommentInput] = useState('')
 
@@ -123,7 +126,7 @@ export function ProposalsPage() {
 
       setProposals([...mapped, ...INITIAL_PROPOSALS])
       setLikedIds(userLiked)
-      setCommentsByProposal(groupedComments)
+      setCommentsByProposal({ ...INITIAL_COMMENTS, ...groupedComments })
       if (bookmarkRes.data) {
         setBookmarkedIds(bookmarkRes.data.map((b) => b.proposal_id))
       }
@@ -342,6 +345,35 @@ export function ProposalsPage() {
     setCommentInput('')
   }
 
+  const handleDeleteComment = async (
+    comment: ProposalComment,
+    item: ProposalWithOwner,
+  ) => {
+    // 본인 댓글만 삭제 가능 (DB RLS에서도 auth.uid() = user_id 로 한 번 더 보호됨)
+    if (item.isDb && supabase && user && comment.userId === user.id) {
+      const { error } = await supabase
+        .from('proposal_comments')
+        .delete()
+        .eq('id', comment.id)
+        .eq('user_id', user.id)
+      if (error) return
+    }
+
+    setCommentsByProposal((prev) => ({
+      ...prev,
+      [item.id]: (prev[item.id] ?? []).filter((c) => c.id !== comment.id),
+    }))
+    if (item.isDb) {
+      setProposals((prev) =>
+        prev.map((p) =>
+          p.id === item.id
+            ? { ...p, comments: Math.max(0, p.comments - 1) }
+            : p,
+        ),
+      )
+    }
+  }
+
   const visibleProposals = proposals
     .filter((item) => {
       const q = searchQuery.trim().toLowerCase()
@@ -536,9 +568,7 @@ export function ProposalsPage() {
               ? item.likes
               : item.likes + (isLiked ? 1 : 0)
             const commentsList = commentsByProposal[item.id] ?? []
-            const commentCount = item.isDb
-              ? item.comments
-              : item.comments + commentsList.length
+            const commentCount = item.isDb ? item.comments : commentsList.length
             const canDelete =
               item.id.startsWith('local-') || (user && item.userId === user.id)
             const commentsOpen = openCommentId === item.id
@@ -647,20 +677,44 @@ export function ProposalsPage() {
                           첫 댓글을 남겨보세요!
                         </p>
                       ) : (
-                        commentsList.map((c) => (
-                          <div
-                            key={c.id}
-                            style={{
-                              fontSize: '12.5px',
-                              lineHeight: 1.45,
-                              backgroundColor: '#fafbf8',
-                              padding: '6px 10px',
-                              borderRadius: '8px',
-                            }}
-                          >
-                            <strong>{c.authorName}</strong> · {c.content}
-                          </div>
-                        ))
+                        commentsList.map((c) => {
+                          const canDeleteComment =
+                            c.id.startsWith('c-') ||
+                            (user && c.userId === user.id)
+                          return (
+                            <div
+                              key={c.id}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '8px',
+                                fontSize: '12.5px',
+                                lineHeight: 1.45,
+                                backgroundColor: '#fafbf8',
+                                padding: '6px 10px',
+                                borderRadius: '8px',
+                              }}
+                            >
+                              <span>
+                                <strong>{c.authorName}</strong> · {c.content}
+                              </span>
+                              {canDeleteComment && (
+                                <button
+                                  type="button"
+                                  aria-label="댓글 삭제"
+                                  onClick={() => handleDeleteComment(c, item)}
+                                  style={{
+                                    color: 'var(--color-text-muted)',
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              )}
+                            </div>
+                          )
+                        })
                       )}
                       <form
                         onSubmit={(e) => handleAddComment(e, item)}

@@ -27,7 +27,7 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     location: '서울 노원구 공릉역 6번 출구',
     image: propShadeImg,
     likes: 31,
-    comments: 9,
+    comments: 3,
     createdAt: '2026-11-14',
   },
   {
@@ -39,7 +39,7 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     location: '서울 노원구 중랑천 산책로',
     image: propStreamImg,
     likes: 24,
-    comments: 5,
+    comments: 2,
     createdAt: '2026-11-10',
   },
   {
@@ -51,7 +51,7 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     location: '서울 노원구 공릉동 2,3동',
     image: propStreetImg,
     likes: 42,
-    comments: 8,
+    comments: 2,
     createdAt: '2026-10-28',
   },
   {
@@ -63,7 +63,89 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     location: '서울 노원구 중계근린공원',
     image: propParkImg,
     likes: 57,
-    comments: 13,
+    comments: 2,
     createdAt: '2026-10-15',
   },
 ]
+
+export interface MockComment {
+  id: string
+  proposalId: string
+  authorName: string
+  content: string
+  createdAt: string
+}
+
+export const INITIAL_COMMENTS: Record<string, MockComment[]> = {
+  'prop-1': [
+    {
+      id: 'mock-c-1',
+      proposalId: 'prop-1',
+      authorName: '이초록',
+      content: '맞아요, 여름 낮에 6번 출구 쪽은 그늘이 거의 없어서 꼭 필요해 보여요!',
+      createdAt: '2026-11-15',
+    },
+    {
+      id: 'mock-c-2',
+      proposalId: 'prop-1',
+      authorName: '김자반',
+      content: '작은 쉼터 벤치도 같이 놓이면 어르신들이 쉬어가기 좋을 것 같아요.',
+      createdAt: '2026-11-16',
+    },
+    {
+      id: 'mock-c-3',
+      proposalId: 'prop-1',
+      authorName: '박연두',
+      content: '공감합니다! 가로수 식재 적극 찬성해요.',
+      createdAt: '2026-11-17',
+    },
+  ],
+  'prop-2': [
+    {
+      id: 'mock-c-4',
+      proposalId: 'prop-2',
+      authorName: '윤땡미',
+      content: '요즘 중랑천에 왜가리랑 오리들이 자주 보여서 보전이 정말 중요해요.',
+      createdAt: '2026-11-11',
+    },
+    {
+      id: 'mock-c-5',
+      proposalId: 'prop-2',
+      authorName: '이초록',
+      content: '수변 식물 안내 팻말이 있으면 아이들과 관찰하기 더 좋을 듯합니다.',
+      createdAt: '2026-11-12',
+    },
+  ],
+  'prop-3': [
+    {
+      id: 'mock-c-6',
+      proposalId: 'prop-3',
+      authorName: '김슈니',
+      content: '경춘선숲길 중간 구간에 그늘막 쉼터 생기면 정말 자주 이용할 것 같아요.',
+      createdAt: '2026-10-29',
+    },
+    {
+      id: 'mock-c-7',
+      proposalId: 'prop-3',
+      authorName: '박연두',
+      content: '주말에 산책하는 사람이 많아서 벤치 추가가 꼭 필요해요!',
+      createdAt: '2026-10-30',
+    },
+  ],
+  'prop-4': [
+    {
+      id: 'mock-c-8',
+      proposalId: 'prop-4',
+      authorName: '김자반',
+      content: '가을 단풍나무 수종 이름이 궁금했는데 안내판 생기면 좋겠네요.',
+      createdAt: '2026-10-16',
+    },
+    {
+      id: 'mock-c-9',
+      proposalId: 'prop-4',
+      authorName: '윤땡미',
+      content: 'QR코드로 생태 설명을 볼 수 있어도 재미있을 것 같아요.',
+      createdAt: '2026-10-18',
+    },
+  ],
+}
