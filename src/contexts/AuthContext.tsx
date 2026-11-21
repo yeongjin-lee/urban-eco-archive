@@ -18,6 +18,11 @@ interface AuthContextValue {
     password: string,
     nickname: string,
     locationConsent: boolean,
+  ) => Promise<{ error: string | null; needsEmailConfirm: boolean }>
+  resendConfirmation: (email: string) => Promise<string | null>
+  updateProfile: (
+    nickname: string,
+    locationConsent: boolean,
   ) => Promise<string | null>
   signOut: () => Promise<void>
 }
@@ -57,13 +62,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     nickname: string,
     locationConsent: boolean,
   ) => {
-    if (!supabase) return 'Supabase 환경변수가 아직 연결되지 않았습니다.'
+    if (!supabase) {
+      return {
+        error: 'Supabase 환경변수가 아직 연결되지 않았습니다.',
+        needsEmailConfirm: false,
+      }
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { nickname } },
+      options: {
+        data: { nickname },
+        emailRedirectTo: `${window.location.origin}/mypage`,
+      },
     })
-    if (error) return error.message
+    if (error) return { error: error.message, needsEmailConfirm: false }
 
     if (data.user) {
       await supabase.from('profiles').upsert({
@@ -73,6 +86,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         location_consent: locationConsent,
       })
     }
+
+    // session이 null이면 이메일 인증 대기 상태
+    return { error: null, needsEmailConfirm: !data.session }
+  }
+
+  const resendConfirmation = async (email: string) => {
+    if (!supabase) return 'Supabase가 연결되지 않았습니다.'
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: `${window.location.origin}/mypage` },
+    })
+    return error ? error.message : null
+  }
+
+  const updateProfile = async (nickname: string, locationConsent: boolean) => {
+    if (!supabase || !user) return '로그인이 필요합니다.'
+    const { data, error } = await supabase.auth.updateUser({
+      data: { nickname },
+    })
+    if (error) return error.message
+
+    await supabase.from('profiles').upsert({
+      id: user.id,
+      nickname,
+      email: user.email,
+      location_consent: locationConsent,
+    })
+
+    if (data.user) setUser(data.user)
     return null
   }
 
@@ -89,6 +132,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isConfigured: Boolean(supabase),
         signIn,
         signUp,
+        resendConfirmation,
+        updateProfile,
         signOut,
       }}
     >

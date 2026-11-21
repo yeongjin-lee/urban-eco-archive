@@ -63,7 +63,7 @@ const INITIAL_RECORDS: EcoRecord[] = [
 ]
 
 export function MyPage() {
-  const { user, isConfigured, signOut } = useAuth()
+  const { user, isConfigured, signOut, updateProfile } = useAuth()
   const navigate = useNavigate()
 
   const [activeTab, setActiveTab] = useState<SideTab>('records')
@@ -78,6 +78,13 @@ export function MyPage() {
   const [newLocation, setNewLocation] = useState('')
   const [newFile, setNewFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
+
+  // 프로필 정보 변경 상태
+  const [editNickname, setEditNickname] = useState(
+    (user?.user_metadata?.nickname as string | undefined) || '',
+  )
+  const [editLocationConsent, setEditLocationConsent] = useState(false)
+  const [profileMsg, setProfileMsg] = useState<string | null>(null)
 
   useEffect(() => {
     if (!supabase || !user) return
@@ -502,10 +509,61 @@ export function MyPage() {
 
         {activeTab === 'settings' && (
           <>
-            <h2 className={styles.contentTitle}>설정</h2>
-            <div className={styles.emptyPanel}>
-              현재 로그인 계정: <strong>{displayEmail}</strong>
-            </div>
+            <h2 className={styles.contentTitle}>프로필 정보 변경</h2>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault()
+                setProfileMsg(null)
+                const err = await updateProfile(
+                  editNickname.trim() || displayName,
+                  editLocationConsent,
+                )
+                setProfileMsg(
+                  err ? `저장 실패: ${err}` : '프로필 정보가 저장되었습니다!',
+                )
+              }}
+              style={{
+                marginTop: '24px',
+                maxWidth: '420px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '14px',
+              }}
+            >
+              <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
+                이메일: <strong>{displayEmail}</strong>
+              </p>
+              <label style={{ display: 'grid', gap: '6px', fontSize: '13px', fontWeight: 700 }}>
+                닉네임
+                <input
+                  type="text"
+                  className={styles.input}
+                  placeholder={displayName}
+                  value={editNickname}
+                  onChange={(e) => setEditNickname(e.target.value)}
+                />
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
+                <input
+                  type="checkbox"
+                  checked={editLocationConsent}
+                  onChange={(e) => setEditLocationConsent(e.target.checked)}
+                />
+                <span>위치기반 정보 활용 동의</span>
+              </label>
+              {profileMsg && (
+                <p style={{ fontSize: '13px', color: 'var(--color-green-dark)' }}>
+                  {profileMsg}
+                </p>
+              )}
+              <button
+                type="submit"
+                className={styles.submitBtn}
+                style={{ alignSelf: 'flex-start' }}
+              >
+                변경사항 저장
+              </button>
+            </form>
           </>
         )}
       </section>
