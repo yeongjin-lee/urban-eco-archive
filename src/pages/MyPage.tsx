@@ -32,6 +32,16 @@ interface EcoRecord {
   bookmarked: boolean
 }
 
+interface MyProposalItem {
+  id: string
+  tag: string
+  title: string
+  description: string
+  location: string
+  date: string
+  image: string
+}
+
 const INITIAL_RECORDS: EcoRecord[] = [
   {
     id: 'rec-1',
@@ -71,6 +81,10 @@ export function MyPage() {
   const [records, setRecords] = useState<EcoRecord[]>(
     isConfigured ? [] : INITIAL_RECORDS,
   )
+  const [myProposals, setMyProposals] = useState<MyProposalItem[]>([])
+  const [bookmarkedProposals, setBookmarkedProposals] = useState<
+    MyProposalItem[]
+  >([])
   const [showAddForm, setShowAddForm] = useState(false)
 
   const [newCat, setNewCat] = useState<Exclude<RecordCategory, '전체'>>('식물')
@@ -88,7 +102,9 @@ export function MyPage() {
 
   useEffect(() => {
     if (!supabase || !user) return
-    supabase
+    const client = supabase
+
+    client
       .from('eco_records')
       .select('*')
       .eq('user_id', user.id)
@@ -106,6 +122,53 @@ export function MyPage() {
             bookmarked: row.bookmarked,
           })),
         )
+      })
+
+    // 내가 작성한 녹색제안 불러오기
+    client
+      .from('proposals')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        if (!data) return
+        setMyProposals(
+          data.map((row) => ({
+            id: row.id,
+            tag: row.tag,
+            title: row.title,
+            description: row.description,
+            location: row.location,
+            date: String(row.created_at).slice(0, 10).replaceAll('-', '.'),
+            image: row.image_url || '',
+          })),
+        )
+      })
+
+    // 내가 북마크한 녹색제안 불러오기
+    client
+      .from('proposal_bookmarks')
+      .select('proposal_id, proposals(*)')
+      .eq('user_id', user.id)
+      .then(({ data }) => {
+        if (!data) return
+        const items: MyProposalItem[] = []
+        data.forEach((row) => {
+          const p = Array.isArray(row.proposals)
+            ? row.proposals[0]
+            : row.proposals
+          if (!p) return
+          items.push({
+            id: p.id,
+            tag: p.tag,
+            title: p.title,
+            description: p.description,
+            location: p.location,
+            date: String(p.created_at).slice(0, 10).replaceAll('-', '.'),
+            image: p.image_url || '',
+          })
+        })
+        setBookmarkedProposals(items)
       })
   }, [user])
 
@@ -442,29 +505,28 @@ export function MyPage() {
 
         {activeTab === 'proposals' && (
           <>
-            <h2 className={styles.contentTitle}>내 제안</h2>
-            <div className={styles.emptyPanel}>
-              작성한 녹색제안은{' '}
-              <Link to="/proposals" style={{ textDecoration: 'underline' }}>
-                녹색제안 페이지
+            <div className={styles.contentHead}>
+              <h2 className={styles.contentTitle}>내 제안</h2>
+              <Link to="/proposals" className={styles.addBtn}>
+                녹색제안 보러가기
               </Link>
-              에서 확인하고 삭제할 수 있습니다.
             </div>
-          </>
-        )}
-
-        {activeTab === 'favorites' && (
-          <>
-            <h2 className={styles.contentTitle}>즐겨찾기</h2>
-            <div className={styles.recordList}>
-              {records
-                .filter((r) => r.bookmarked)
-                .map((rec) => (
-                  <article key={rec.id} className={styles.recordRow}>
-                    {rec.image ? (
+            {myProposals.length === 0 ? (
+              <div className={styles.emptyPanel}>
+                아직 작성한 녹색제안이 없어요.{' '}
+                <Link to="/proposals" style={{ textDecoration: 'underline' }}>
+                  녹색제안 페이지
+                </Link>
+                에서 첫 제안을 남겨보세요!
+              </div>
+            ) : (
+              <div className={styles.recordList}>
+                {myProposals.map((item) => (
+                  <article key={item.id} className={styles.recordRow}>
+                    {item.image ? (
                       <img
-                        src={rec.image}
-                        alt={rec.title}
+                        src={item.image}
+                        alt={item.title}
                         className={styles.recordImg}
                       />
                     ) : (
@@ -483,13 +545,129 @@ export function MyPage() {
                       </div>
                     )}
                     <div>
-                      <p className={styles.recordCat}>{rec.category}</p>
-                      <h3 className={styles.recordTitle}>{rec.title}</h3>
+                      <p className={styles.recordCat}>{item.tag}</p>
+                      <h3 className={styles.recordTitle}>{item.title}</h3>
                       <div className={styles.recordMeta}>
-                        <span>{rec.date}</span>
+                        <span>{item.date}</span>
                         <span className={styles.recordLoc}>
                           <MapPin size={14} />
-                          <span>{rec.location}</span>
+                          <span>{item.location}</span>
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className={styles.bookmarkBtn}
+                      aria-label="제안 삭제"
+                      onClick={async () => {
+                        if (supabase && user) {
+                          await supabase
+                            .from('proposals')
+                            .delete()
+                            .eq('id', item.id)
+                        }
+                        setMyProposals((prev) =>
+                          prev.filter((p) => p.id !== item.id),
+                        )
+                      }}
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </article>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === 'favorites' && (
+          <>
+            <h2 className={styles.contentTitle}>즐겨찾기</h2>
+            {records.filter((r) => r.bookmarked).length === 0 &&
+            bookmarkedProposals.length === 0 ? (
+              <div className={styles.emptyPanel}>
+                아직 북마크(저장)한 기록이나 녹색제안이 없어요.
+              </div>
+            ) : (
+              <div className={styles.recordList}>
+                {records
+                  .filter((r) => r.bookmarked)
+                  .map((rec) => (
+                    <article key={rec.id} className={styles.recordRow}>
+                      {rec.image ? (
+                        <img
+                          src={rec.image}
+                          alt={rec.title}
+                          className={styles.recordImg}
+                        />
+                      ) : (
+                        <div
+                          className={styles.recordImg}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#f3f5ef',
+                            color: 'var(--color-text-muted)',
+                            fontSize: '12px',
+                          }}
+                        >
+                          사진 없음
+                        </div>
+                      )}
+                      <div>
+                        <p className={styles.recordCat}>내 기록 · {rec.category}</p>
+                        <h3 className={styles.recordTitle}>{rec.title}</h3>
+                        <div className={styles.recordMeta}>
+                          <span>{rec.date}</span>
+                          <span className={styles.recordLoc}>
+                            <MapPin size={14} />
+                            <span>{rec.location}</span>
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.bookmarkBtn}
+                        aria-label="북마크 해제"
+                        onClick={() => toggleBookmark(rec.id)}
+                      >
+                        <Bookmark size={22} fill="currentColor" />
+                      </button>
+                    </article>
+                  ))}
+
+                {bookmarkedProposals.map((item) => (
+                  <article key={item.id} className={styles.recordRow}>
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className={styles.recordImg}
+                      />
+                    ) : (
+                      <div
+                        className={styles.recordImg}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#f3f5ef',
+                          color: 'var(--color-text-muted)',
+                          fontSize: '12px',
+                        }}
+                      >
+                        사진 없음
+                      </div>
+                    )}
+                    <div>
+                      <p className={styles.recordCat}>녹색제안 · {item.tag}</p>
+                      <h3 className={styles.recordTitle}>{item.title}</h3>
+                      <div className={styles.recordMeta}>
+                        <span>{item.date}</span>
+                        <span className={styles.recordLoc}>
+                          <MapPin size={14} />
+                          <span>{item.location}</span>
                         </span>
                       </div>
                     </div>
@@ -497,13 +675,25 @@ export function MyPage() {
                       type="button"
                       className={styles.bookmarkBtn}
                       aria-label="북마크 해제"
-                      onClick={() => toggleBookmark(rec.id)}
+                      onClick={async () => {
+                        if (supabase && user) {
+                          await supabase
+                            .from('proposal_bookmarks')
+                            .delete()
+                            .eq('proposal_id', item.id)
+                            .eq('user_id', user.id)
+                        }
+                        setBookmarkedProposals((prev) =>
+                          prev.filter((p) => p.id !== item.id),
+                        )
+                      }}
                     >
                       <Bookmark size={22} fill="currentColor" />
                     </button>
                   </article>
                 ))}
-            </div>
+              </div>
+            )}
           </>
         )}
 
