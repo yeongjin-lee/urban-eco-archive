@@ -11,9 +11,9 @@ import {
   User,
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import aboutForestImg from '../assets/images/about-forest.jpg'
-import magMemoryImg from '../assets/images/mag-memory.jpg'
-import propStreamImg from '../assets/images/prop-stream.jpg'
+import my1Img from '../assets/images/my-1.jpg'
+import my2Img from '../assets/images/my-2.jpg'
+import my3Img from '../assets/images/my-3.jpg'
 import { useAuth } from '../contexts/AuthContext'
 import { uploadEcoImage } from '../lib/storage'
 import { supabase } from '../lib/supabase'
@@ -49,7 +49,7 @@ const INITIAL_RECORDS: EcoRecord[] = [
     title: '서울숲의 느티나무',
     date: '2026.05.20',
     location: '서울 성동구 서울숲길',
-    image: aboutForestImg,
+    image: my1Img,
     bookmarked: true,
   },
   {
@@ -58,7 +58,7 @@ const INITIAL_RECORDS: EcoRecord[] = [
     title: '청계천의 오리 가족',
     date: '2026.06.01',
     location: '서울 종로구 청계천로',
-    image: propStreamImg,
+    image: my2Img,
     bookmarked: false,
   },
   {
@@ -67,7 +67,7 @@ const INITIAL_RECORDS: EcoRecord[] = [
     title: '연희동 골목',
     date: '2026.08.06',
     location: '서울 서대문구 연희로 11길',
-    image: magMemoryImg,
+    image: my3Img,
     bookmarked: true,
   },
 ]

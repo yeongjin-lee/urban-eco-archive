@@ -2,17 +2,17 @@ import {
   CategoryShowcase,
   type CategoryItem,
 } from '../components/CategoryShowcase'
-import magMemoryImg from '../assets/images/mag-memory.jpg'
 import magArchivingImg from '../assets/images/mag-archiving.jpg'
 import magEcologyImg from '../assets/images/mag-ecology.jpg'
-import shelterWalkImg from '../assets/images/shelter-walk.jpg'
+import magMemoryImg from '../assets/images/mag-memory.jpg'
+import magWalkingImg from '../assets/images/mag-walking.jpg'
 
 const MAGAZINE_CATEGORIES: CategoryItem[] = [
   {
     id: 'walking',
     title: '산책 코스',
     description: '공릉동의 산책길들 들러볼 만한 곳',
-    image: shelterWalkImg,
+    image: magWalkingImg,
     to: '/magazine/walking',
   },
   {
