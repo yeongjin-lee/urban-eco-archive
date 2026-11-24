@@ -11,9 +11,9 @@
   z-index: 1;
 }
 
-/* PDF 시안의 베이지·올리브그린 지도 톤 재현 (API 키 불필요한 OpenStreetMap 타일 사용) */
+/* PDF 시안의 채도 낮은 올리브·세이지 그린 지도 톤 재현 */
 .mapCanvas :global(.leaflet-tile-pane) {
-  filter: sepia(0.38) hue-rotate(25deg) saturate(0.65) brightness(1.01) contrast(0.95);
+  filter: sepia(0.35) hue-rotate(42deg) saturate(0.45) brightness(0.99) contrast(0.92);
 }
 
 .pin {
