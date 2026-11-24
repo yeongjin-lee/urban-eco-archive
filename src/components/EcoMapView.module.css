@@ -11,9 +11,9 @@
   z-index: 1;
 }
 
-/* PDF 시안의 채도 낮은 올리브·세이지 그린 지도 톤 재현 */
+/* PDF 시안처럼 도로/배경은 연한 베이지·아이보리, 녹지는 차분한 회녹색이 되도록 보정 */
 .mapCanvas :global(.leaflet-tile-pane) {
-  filter: sepia(0.35) hue-rotate(42deg) saturate(0.45) brightness(0.99) contrast(0.92);
+  filter: saturate(0.22) sepia(0.28) hue-rotate(24deg) brightness(1.03) contrast(0.92);
 }
 
 .pin {
