@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import ecoIconsStripImg from '../assets/courses/eco-icons.png'
+import instagramIcon from '../assets/icons/instagram.png'
+import locationIcon from '../assets/icons/location.png'
+import personIcon from '../assets/icons/person.png'
 import memCircle1Img from '../assets/images/mem-circle-1.jpg'
 import memCircle2Img from '../assets/images/mem-circle-2.jpg'
 import memCircle3Img from '../assets/images/mem-circle-3.jpg'
@@ -205,6 +208,14 @@ export function MagazineDetailPage() {
             </Link>
           </div>
 
+          <p className={styles.memoryQuote}>
+            See familiar streets through a
+            <br />
+            new lens, and help shape the
+            <br />
+            living landscape of our cities.
+          </p>
+
           <div className={styles.memoryFourGrid}>
             <Link to="/magazine/history" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>공릉동의 역사</h2>
@@ -278,6 +289,39 @@ export function MagazineDetailPage() {
                 />
               </Link>
             ))}
+          </div>
+
+          <div className={styles.memoryBottomIcons}>
+            <Link
+              to="/magazine/categories"
+              className={styles.memoryBottomIconBtn}
+              aria-label="카테고리 전체로"
+            >
+              <RotateCcw size={20} />
+            </Link>
+            <Link
+              to="/mypage"
+              className={styles.memoryBottomIconBtn}
+              aria-label="마이페이지"
+            >
+              <img src={personIcon} alt="" width={22} height={22} />
+            </Link>
+            <Link
+              to="/shelter"
+              className={styles.memoryBottomIconBtn}
+              aria-label="오늘의쉼터"
+            >
+              <img src={locationIcon} alt="" width={24} height={20} />
+            </Link>
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noreferrer"
+              className={styles.memoryBottomIconBtn}
+              aria-label="인스타그램"
+            >
+              <img src={instagramIcon} alt="" width={22} height={22} />
+            </a>
           </div>
         </div>
       )}
