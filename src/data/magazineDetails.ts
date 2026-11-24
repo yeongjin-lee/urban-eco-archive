@@ -1,3 +1,21 @@
+import c1Icon from '../assets/courses/c1-icon.png'
+import c1Left from '../assets/courses/c1-left.png'
+import c1Right from '../assets/courses/c1-right.png'
+import c2Icon from '../assets/courses/c2-icon.png'
+import c2Left from '../assets/courses/c2-left.png'
+import c2Right from '../assets/courses/c2-right.png'
+import c3Icon from '../assets/courses/c3-icon.png'
+import c3Left from '../assets/courses/c3-left.png'
+import c3Right from '../assets/courses/c3-right.png'
+import c4Icon from '../assets/courses/c4-icon.png'
+import c4Left from '../assets/courses/c4-left.png'
+import c4Right from '../assets/courses/c4-right.png'
+import c5Icon from '../assets/courses/c5-icon.png'
+import c5Left from '../assets/courses/c5-left.png'
+import c5Right from '../assets/courses/c5-right.png'
+import c6Icon from '../assets/courses/c6-icon.png'
+import c6Left from '../assets/courses/c6-left.png'
+import c6Right from '../assets/courses/c6-right.png'
 import aboutForestImg from '../assets/images/about-forest.jpg'
 import homeHeroImg from '../assets/images/home-hero.jpg'
 import magArchivingImg from '../assets/images/mag-archiving.jpg'
@@ -23,6 +41,9 @@ export interface WalkingCourse {
   lat: number
   lng: number
   address: string
+  iconImg: string
+  leftPhoto: string
+  rightPhoto: string
 }
 
 export const WALKING_COURSES: WalkingCourse[] = [
@@ -30,85 +51,103 @@ export const WALKING_COURSES: WalkingCourse[] = [
     id: 'course-1',
     number: 1,
     title: '서울여대 산책 코스',
-    start: '서울여자대학교 정문',
-    end: '만주벌판 · 바롬관 숲길',
-    distance: '1.4 km',
-    duration: '약 25분',
+    start: '',
+    end: '',
+    distance: '',
+    duration: '',
     description:
       '캠퍼스 안쪽 푸른 소나무 숲과 잔디광장을 따라 천천히 걸으며 사계절 변화를 느끼는 코스입니다.',
     lat: 37.6281,
     lng: 127.0904,
     address: '서울 노원구 화랑로 621',
+    iconImg: c1Icon,
+    leftPhoto: c1Left,
+    rightPhoto: c1Right,
   },
   {
     id: 'course-2',
     number: 2,
     title: '아이와 함께 하는 산책 코스',
-    start: '화랑대 철도공원',
-    end: '경춘선숲길 방문자센터',
-    distance: '1.8 km',
-    duration: '약 35분',
+    start: '',
+    end: '',
+    distance: '',
+    duration: '',
     description:
       '경사가 완만하고 벤치가 많아 아이와 함께 꽃과 나무를 관찰하며 안전하게 걷기 좋습니다.',
     lat: 37.6232,
     lng: 127.0928,
     address: '서울 노원구 화랑로 608',
+    iconImg: c2Icon,
+    leftPhoto: c2Left,
+    rightPhoto: c2Right,
   },
   {
     id: 'course-3',
     number: 3,
     title: '녹색 공간',
-    start: '공릉역 2번 출구',
-    end: '공릉동 도깨비시장 인근 화단길',
-    distance: '1.1 km',
-    duration: '약 20분',
+    start: '',
+    end: '',
+    distance: '',
+    duration: '',
     description:
       '주택가와 상점 앞 골목 모퉁이에 주민들이 가꾼 작은 화단과 가로수 그늘을 만나는 길입니다.',
     lat: 37.6256,
     lng: 127.0731,
     address: '서울 노원구 공릉로',
+    iconImg: c3Icon,
+    leftPhoto: c3Left,
+    rightPhoto: c3Right,
   },
   {
     id: 'course-4',
     number: 4,
     title: '공원',
-    start: '경춘선숲길 공릉구간',
-    end: '태릉입구 수변쉼터',
-    distance: '2.2 km',
-    duration: '약 40분',
+    start: '',
+    end: '',
+    distance: '',
+    duration: '',
     description:
       '옛 철길을 따라 이어지는 도심 선형 공원으로, 초록 나무와 휴게 공간이 조화를 이룹니다.',
     lat: 37.6248,
     lng: 127.0815,
     address: '서울 노원구 공릉동 126',
+    iconImg: c4Icon,
+    leftPhoto: c4Left,
+    rightPhoto: c4Right,
   },
   {
     id: 'course-5',
     number: 5,
     title: '계절 스팟',
-    start: '태릉·강릉 입구',
-    end: '태릉 백세길 숲속 쉼터',
-    distance: '2.5 km',
-    duration: '약 45분',
+    start: '',
+    end: '',
+    distance: '',
+    duration: '',
     description:
       '봄의 벚꽃, 여름의 짙은 녹음, 가을 단풍과 겨울 설경까지 계절마다 다른 풍경을 선사합니다.',
     lat: 37.6309,
     lng: 127.0956,
     address: '서울 노원구 공릉동 223-19',
+    iconImg: c5Icon,
+    leftPhoto: c5Left,
+    rightPhoto: c5Right,
   },
   {
     id: 'course-6',
     number: 6,
     title: '러닝 코스',
-    start: '중랑천 공릉교',
-    end: '월계교 수변 트랙',
-    distance: '3.6 km',
-    duration: '약 30분 (러닝)',
+    start: '',
+    end: '',
+    distance: '',
+    duration: '',
     description:
       '탁 트인 하천 바람을 맞으며 일정한 페이스로 달리기 좋은 중랑천 대표 수변 러닝 코스입니다.',
     lat: 37.6224,
     lng: 127.0689,
     address: '서울 노원구 중랑천 산책로',
+    iconImg: c6Icon,
+    leftPhoto: c6Left,
+    rightPhoto: c6Right,
   },
 ]
 

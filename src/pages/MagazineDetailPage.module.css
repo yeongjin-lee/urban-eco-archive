@@ -132,6 +132,77 @@
   color: var(--color-green-dark);
 }
 
+/* 1-1) 산책 코스 개별 상세 (PDF 11~16페이지 3단 레이아웃) */
+.courseDetailGrid {
+  display: grid;
+  grid-template-columns: 220px 1fr 270px;
+  gap: 24px;
+  align-items: start;
+}
+
+.courseLeftCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.courseIconImg {
+  width: 110px;
+  height: 95px;
+  object-fit: contain;
+}
+
+.courseBadge {
+  padding: 8px 18px;
+  border-radius: 10px;
+  background-color: var(--color-green-soft);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.courseLeftPhoto {
+  width: 100%;
+  height: 310px;
+  object-fit: cover;
+}
+
+.courseCenterMap {
+  border: 1px solid var(--color-border);
+  height: 490px;
+  overflow: hidden;
+}
+
+.courseRightCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.courseInfoBox {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  padding: 16px 18px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.ecoIconsStrip {
+  width: 100%;
+  max-width: 220px;
+  object-fit: contain;
+}
+
+.courseRightPhoto {
+  width: 100%;
+  max-width: 240px;
+  object-fit: contain;
+}
+
 .courseDetailBox {
   margin-top: 24px;
   padding: 24px 28px;
@@ -364,7 +435,8 @@
 }
 
 @media (max-width: 960px) {
-  .walkingHero {
+  .walkingHero,
+  .courseDetailGrid {
     grid-template-columns: 1fr;
   }
 

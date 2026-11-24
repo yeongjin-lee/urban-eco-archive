@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Link, NavLink, useParams } from 'react-router-dom'
+import ecoIconsStripImg from '../assets/courses/eco-icons.png'
 import aboutForestImg from '../assets/images/about-forest.jpg'
 import homeHeroImg from '../assets/images/home-hero.jpg'
 import magArchivingImg from '../assets/images/mag-archiving.jpg'
@@ -29,12 +30,10 @@ const CATEGORY_TABS = [
 
 export function MagazineDetailPage() {
   const { category = 'walking' } = useParams<{ category?: string }>()
-  const [selectedCourseId, setSelectedCourseId] = useState(
-    WALKING_COURSES[0].id,
-  )
+  const [openedCourseId, setOpenedCourseId] = useState<string | null>(null)
 
   const activeCourse =
-    WALKING_COURSES.find((c) => c.id === selectedCourseId) ?? WALKING_COURSES[0]
+    WALKING_COURSES.find((c) => c.id === openedCourseId) ?? WALKING_COURSES[0]
 
   const coursePins: MapPin[] = WALKING_COURSES.map((c) => ({
     id: c.id,
@@ -69,49 +68,104 @@ export function MagazineDetailPage() {
         </div>
       </div>
 
-      {/* 1. 산책 코스 */}
-      {category === 'walking' && (
-        <div>
-          <div className={styles.walkingHero}>
-            <div className={styles.walkingIntroCard}>
-              <div>
-                <p className={styles.walkingSmall}>프로젝트 중심지</p>
-                <h1 className={styles.walkingPlace}>서울여자대학교</h1>
-                <p className={styles.walkingRoute}>Route · 공릉동</p>
+      {/* 1. 산책 코스 (PDF 10페이지 목록 ↔ PDF 11~16페이지 개별 코스 상세) */}
+      {category === 'walking' &&
+        (openedCourseId === null ? (
+          <div>
+            <div className={styles.walkingHero}>
+              <div className={styles.walkingIntroCard}>
+                <div>
+                  <p className={styles.walkingSmall}>프로젝트 중심지</p>
+                  <h1 className={styles.walkingPlace}>서울여자대학교</h1>
+                  <p className={styles.walkingRoute}>Route · 공릉동</p>
+                </div>
+                <p className={styles.walkingSmall}>
+                  일상 속에서 쉬어갈 수 있는 장소와 산책 코스를 소개합니다.
+                </p>
               </div>
-              <p className={styles.walkingSmall}>
-                일상 속에서 쉬어갈 수 있는 장소와 산책 코스를 소개합니다.
-              </p>
+
+              <div className={styles.walkingMapBox}>
+                <EcoMapView
+                  pins={coursePins}
+                  selectedPinId={null}
+                  onSelectPin={(id) => setOpenedCourseId(id)}
+                  accentColor="#5e7a2d"
+                />
+              </div>
             </div>
 
-            <div className={styles.walkingMapBox}>
-              <EcoMapView
-                pins={coursePins}
-                selectedPinId={activeCourse.id}
-                onSelectPin={setSelectedCourseId}
-                accentColor="#5e7a2d"
-              />
-            </div>
-          </div>
-
-          <div className={styles.courseStepper}>
-            {WALKING_COURSES.map((course) => {
-              const isSelected = course.id === activeCourse.id
-              return (
+            <div className={styles.courseStepper}>
+              {WALKING_COURSES.map((course) => (
                 <button
                   key={course.id}
                   type="button"
-                  className={`${styles.courseBtn} ${isSelected ? styles.courseBtnActive : ''}`}
-                  onClick={() => setSelectedCourseId(course.id)}
+                  className={styles.courseBtn}
+                  onClick={() => setOpenedCourseId(course.id)}
                 >
                   <span className={styles.courseNum}>{course.number}</span>
                   <span className={styles.courseBtnTitle}>{course.title}</span>
                 </button>
-              )
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div>
+            <div style={{ marginBottom: '20px' }}>
+              <button
+                type="button"
+                className={styles.backLink}
+                onClick={() => setOpenedCourseId(null)}
+              >
+                <ArrowLeft size={16} />
+                <span>산책 코스 목록으로</span>
+              </button>
+            </div>
+
+            <div className={styles.courseDetailGrid}>
+              <div className={styles.courseLeftCol}>
+                <img
+                  src={activeCourse.iconImg}
+                  alt=""
+                  className={styles.courseIconImg}
+                />
+                <span className={styles.courseBadge}>{activeCourse.title}</span>
+                <img
+                  src={activeCourse.leftPhoto}
+                  alt={activeCourse.title}
+                  className={styles.courseLeftPhoto}
+                />
+              </div>
+
+              <div className={styles.courseCenterMap}>
+                <EcoMapView
+                  pins={coursePins}
+                  selectedPinId={activeCourse.id}
+                  onSelectPin={(id) => setOpenedCourseId(id)}
+                  accentColor="#5e7a2d"
+                />
+              </div>
+
+              <div className={styles.courseRightCol}>
+                <div className={styles.courseInfoBox}>
+                  <p>출발지: {activeCourse.start}</p>
+                  <p>도착지: {activeCourse.end}</p>
+                  <p>거리: {activeCourse.distance}</p>
+                  <p>시간: {activeCourse.duration}</p>
+                </div>
+                <img
+                  src={ecoIconsStripImg}
+                  alt=""
+                  className={styles.ecoIconsStrip}
+                />
+                <img
+                  src={activeCourse.rightPhoto}
+                  alt={`${activeCourse.title} 풍경`}
+                  className={styles.courseRightPhoto}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
 
       {/* 2. 공간의 기억 (PDF 17페이지 시안 + 공릉동의 역사) */}
       {category === 'memory' && (
