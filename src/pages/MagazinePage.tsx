@@ -27,7 +27,7 @@ const MAGAZINE_CATEGORIES: CategoryItem[] = [
     title: '녹색 아카이빙',
     description: '직접 발견한 장소와 경험을 기록하기',
     image: magArchivingImg,
-    to: '/magazine/archiving',
+    to: '/proposals',
   },
   {
     id: 'ecology',

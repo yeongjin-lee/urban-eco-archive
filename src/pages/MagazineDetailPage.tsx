@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { Link, NavLink, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ecoIconsStripImg from '../assets/courses/eco-icons.png'
 import aboutForestImg from '../assets/images/about-forest.jpg'
 import homeHeroImg from '../assets/images/home-hero.jpg'
@@ -14,19 +14,14 @@ import shelterRestImg from '../assets/images/shelter-rest.jpg'
 import shelterWalkImg from '../assets/images/shelter-walk.jpg'
 import { EcoMapView, type MapPin } from '../components/EcoMapView'
 import {
-  ARCHIVING_HIGHLIGHTS,
   ECOLOGY_STORIES,
   GONGNEUNG_HISTORY,
+  PEOPLE_SPEAK_STORIES,
+  RESIDENTS_STORIES,
+  SEASONS_STORIES,
   WALKING_COURSES,
 } from '../data/magazineDetails'
 import styles from './MagazineDetailPage.module.css'
-
-const CATEGORY_TABS = [
-  { id: 'walking', label: '산책 코스' },
-  { id: 'memory', label: '공간의 기억' },
-  { id: 'archiving', label: '녹색 아카이빙' },
-  { id: 'ecology', label: '생태이야기' },
-]
 
 export function MagazineDetailPage() {
   const { category = 'walking' } = useParams<{ category?: string }>()
@@ -44,28 +39,25 @@ export function MagazineDetailPage() {
     lng: c.lng,
   }))
 
+  const isMemorySubpage =
+    category === 'history' ||
+    category === 'residents' ||
+    category === 'seasons' ||
+    category === 'people'
+
   return (
     <section className={styles.page}>
-      {/* 상단 뒤로가기 + 카테고리 탭 */}
+      {/* 상단 뒤로가기 */}
       <div className={styles.topNav}>
-        <Link to="/magazine/categories" className={styles.backLink}>
+        <Link
+          to={isMemorySubpage ? '/magazine/memory' : '/magazine/categories'}
+          className={styles.backLink}
+        >
           <ArrowLeft size={16} />
-          <span>카테고리 전체</span>
+          <span>
+            {isMemorySubpage ? '공간의 기억으로' : '카테고리별 글 보기'}
+          </span>
         </Link>
-
-        <div className={styles.tabs}>
-          {CATEGORY_TABS.map((tab) => (
-            <NavLink
-              key={tab.id}
-              to={`/magazine/${tab.id}`}
-              className={({ isActive }) =>
-                `${styles.tabPill} ${isActive ? styles.tabActive : ''}`
-              }
-            >
-              {tab.label}
-            </NavLink>
-          ))}
-        </div>
       </div>
 
       {/* 1. 산책 코스 (PDF 10페이지 목록 ↔ PDF 11~16페이지 개별 코스 상세) */}
@@ -167,7 +159,7 @@ export function MagazineDetailPage() {
           </div>
         ))}
 
-      {/* 2. 공간의 기억 (PDF 17페이지 시안 + 공릉동의 역사) */}
+      {/* 2. 공간의 기억 (PDF 17페이지) */}
       {category === 'memory' && (
         <div>
           <div className={styles.memoryHeader}>
@@ -196,11 +188,11 @@ export function MagazineDetailPage() {
               <ArrowRight size={16} />
               <span>공릉동의 역사, 시간을 거쳐온 우리의 동네 이야기</span>
             </Link>
-            <Link to="/magazine/archiving" className={styles.memoryIndexRow}>
+            <Link to="/magazine/residents" className={styles.memoryIndexRow}>
               <ArrowRight size={16} />
               <span>주민들이 기억하는 공릉동의 이야기</span>
             </Link>
-            <Link to="/magazine/ecology" className={styles.memoryIndexRow}>
+            <Link to="/magazine/seasons" className={styles.memoryIndexRow}>
               <ArrowRight size={16} />
               <span>계절에 따라 변화하는 거리의 이야기</span>
             </Link>
@@ -223,7 +215,7 @@ export function MagazineDetailPage() {
                 걷다 보면 만나는 공릉동만의 이야기들
               </p>
             </Link>
-            <article className={styles.memoryCol}>
+            <Link to="/magazine/residents" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>주민들의 추억</h2>
               <img
                 src={shelterRestImg}
@@ -234,8 +226,8 @@ export function MagazineDetailPage() {
                 공릉동에서 나고 자란 사람들, 떠나와 정착한 젊은이들, 이 동네
                 사람들의 오래되고도 새로운 이야기
               </p>
-            </article>
-            <article className={styles.memoryCol}>
+            </Link>
+            <Link to="/magazine/seasons" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>계절의 변화</h2>
               <img
                 src={propParkImg}
@@ -246,8 +238,8 @@ export function MagazineDetailPage() {
                 계절의 변화를 담은 공릉동의 이야기를 함께 주민들의 추억들과 함께
                 이야기
               </p>
-            </article>
-            <article className={styles.memoryCol}>
+            </Link>
+            <Link to="/magazine/people" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>
                 공릉동 사는 사람들 이야기
               </h2>
@@ -260,7 +252,7 @@ export function MagazineDetailPage() {
                 상인과 주민의 목소리로 만나는 진짜 공릉동 이야기. 사람들의 삶과
                 일상이 쌓여 만들어가는 동네 기록
               </p>
-            </article>
+            </Link>
           </div>
 
           <h2 className={styles.memoryCircleTitle}>공릉동의 역사</h2>
@@ -287,21 +279,12 @@ export function MagazineDetailPage() {
         </div>
       )}
 
-      {/* 2-1. 공릉동의 역사 상세 */}
+      {/* 2-1. 공릉동의 역사 (PDF 18페이지) */}
       {category === 'history' && (
         <div>
-          <Link
-            to="/magazine/memory"
-            className={styles.backLink}
-            style={{ marginBottom: '20px' }}
-          >
-            <ArrowLeft size={16} />
-            <span>공간의 기억으로 돌아가기</span>
-          </Link>
-          <h1 className={styles.pageTitle}>공릉동의 역사</h1>
-          <p className={styles.pageLead}>
-            시간의 흐름 속에서 공릉동의 자연과 마을이 어떻게 변해왔는지 기록합니다.
-          </p>
+          <h1 className={styles.pageTitle} style={{ marginBottom: '28px' }}>
+            공릉동의 역사
+          </h1>
           <div className={styles.storyGrid}>
             {GONGNEUNG_HISTORY.map((item) => (
               <article key={item.era} className={styles.storyCard}>
@@ -319,39 +302,127 @@ export function MagazineDetailPage() {
         </div>
       )}
 
-      {/* 3. 녹색 아카이빙 */}
-      {category === 'archiving' && (
+      {/* 2-2. 주민들의 이야기 & 경춘선의 산책자 (PDF 19페이지) */}
+      {category === 'residents' && (
         <div>
-          <h1 className={styles.pageTitle}>녹색 아카이빙</h1>
-          <p className={styles.pageLead}>
-            주민들이 직접 발견한 장소와 관찰 기록, 인터뷰 이야기를 모아봅니다.
-          </p>
+          <h1 className={styles.pageTitle} style={{ marginBottom: '28px' }}>
+            주민들의 이야기
+          </h1>
           <div className={styles.storyGrid}>
-            {ARCHIVING_HIGHLIGHTS.map((item) => (
-              <article key={item.id} className={styles.storyCard}>
+            {RESIDENTS_STORIES.cards.map((card) => (
+              <article key={card.id} className={styles.storyCard}>
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={card.image}
+                  alt={card.title}
                   className={styles.storyImg}
                 />
-                <h2 className={styles.storyTitle}>{item.title}</h2>
-                <p className={styles.storyEn}>
-                  {item.author} · {item.date}
-                </p>
-                <p className={styles.storyPara}>{item.excerpt}</p>
+                <h2 className={styles.storyTitle}>{card.title}</h2>
+                <p className={styles.storyEn}>{card.subtitle}</p>
+                <p className={styles.storyPara}>{card.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <h2
+            className={styles.pageTitle}
+            style={{ marginTop: '56px', marginBottom: '20px' }}
+          >
+            {RESIDENTS_STORIES.interview.title}
+          </h2>
+          <article className={styles.storyCard}>
+            <img
+              src={RESIDENTS_STORIES.interview.banner}
+              alt={RESIDENTS_STORIES.interview.title}
+              className={styles.storyImg}
+              style={{ height: '240px' }}
+            />
+            <h3 className={styles.storyTitle}>
+              {RESIDENTS_STORIES.interview.questionTitle}
+            </h3>
+            {RESIDENTS_STORIES.interview.qa.map((line) => (
+              <p key={line} className={styles.storyPara}>
+                {line}
+              </p>
+            ))}
+          </article>
+        </div>
+      )}
+
+      {/* 2-3. 공릉동의 사계 & 사계 속 추억 (PDF 20페이지) */}
+      {category === 'seasons' && (
+        <div>
+          <h1 className={styles.pageTitle} style={{ marginBottom: '28px' }}>
+            공릉동의 사계
+          </h1>
+          <div className={styles.storyGrid}>
+            {SEASONS_STORIES.cards.map((card) => (
+              <article key={card.id} className={styles.storyCard}>
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className={styles.storyImg}
+                />
+                <h2 className={styles.storyTitle}>{card.title}</h2>
+                <p className={styles.storyEn}>{card.subtitle}</p>
+                <p className={styles.storyPara}>{card.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <h2
+            className={styles.pageTitle}
+            style={{ marginTop: '56px', marginBottom: '20px' }}
+          >
+            {SEASONS_STORIES.interview.title}
+          </h2>
+          <article className={styles.storyCard}>
+            <img
+              src={SEASONS_STORIES.interview.banner}
+              alt={SEASONS_STORIES.interview.title}
+              className={styles.storyImg}
+              style={{ height: '240px' }}
+            />
+            <h3 className={styles.storyTitle}>
+              {SEASONS_STORIES.interview.questionTitle}
+            </h3>
+            {SEASONS_STORIES.interview.qa.map((line) => (
+              <p key={line} className={styles.storyPara}>
+                {line}
+              </p>
+            ))}
+          </article>
+        </div>
+      )}
+
+      {/* 2-4. 사는 사람들이 말하다. (PDF 21페이지) */}
+      {category === 'people' && (
+        <div>
+          <h1 className={styles.pageTitle} style={{ marginBottom: '28px' }}>
+            사는 사람들이 말하다.
+          </h1>
+          <div className={styles.storyGrid}>
+            {PEOPLE_SPEAK_STORIES.map((card) => (
+              <article key={card.id} className={styles.storyCard}>
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className={styles.storyImg}
+                />
+                <h2 className={styles.storyTitle}>{card.title}</h2>
+                <p className={styles.storyEn}>{card.subtitle}</p>
+                <p className={styles.storyPara}>{card.body}</p>
               </article>
             ))}
           </div>
         </div>
       )}
 
-      {/* 4. 생태이야기 (9개 카드) */}
+      {/* 3. 생태이야기 (PDF 22페이지 9개 카드) */}
       {category === 'ecology' && (
         <div>
-          <h1 className={styles.pageTitle}>생태이야기</h1>
-          <p className={styles.pageLead}>
-            공릉동의 식물, 계절, 골목 정원, 그리고 함께 살아가는 생명들의 이야기
-          </p>
+          <h1 className={styles.pageTitle} style={{ marginBottom: '28px' }}>
+            생태이야기
+          </h1>
           <div className={styles.storyGrid}>
             {ECOLOGY_STORIES.map((story) => (
               <article key={story.id} className={styles.storyCard}>
