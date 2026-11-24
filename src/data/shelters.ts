@@ -1,4 +1,4 @@
-import aboutForestImg from '../assets/images/about-forest.jpg'
+import shelterBreathImg from '../assets/images/shelter-breath.jpg'
 import shelterQuietImg from '../assets/images/shelter-quiet.jpg'
 import shelterRestImg from '../assets/images/shelter-rest.jpg'
 import shelterWalkImg from '../assets/images/shelter-walk.jpg'
@@ -35,7 +35,7 @@ export const SHELTER_SPOTS: ShelterSpot[] = [
     address: '서울 노원구 공릉동 126 (서울여자대학교 인근)',
     lat: 37.6248,
     lng: 127.0815,
-    image: aboutForestImg,
+    image: shelterBreathImg,
     metrics: [
       { label: '초미세먼지 (PM2.5)', value: '12㎍/㎥' },
       { label: '미세먼지 (PM10)', value: '28㎍/㎥' },

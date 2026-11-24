@@ -2,7 +2,7 @@ import {
   CategoryShowcase,
   type CategoryItem,
 } from '../components/CategoryShowcase'
-import aboutForestImg from '../assets/images/about-forest.jpg'
+import shelterBreathImg from '../assets/images/shelter-breath.jpg'
 import shelterRestImg from '../assets/images/shelter-rest.jpg'
 import shelterQuietImg from '../assets/images/shelter-quiet.jpg'
 import shelterWalkImg from '../assets/images/shelter-walk.jpg'
@@ -12,7 +12,7 @@ const SHELTER_CATEGORIES: CategoryItem[] = [
     id: 'breath',
     title: '숨 쉬기 좋은 곳',
     description: '푸른 나무와 맑은 공기 속 자연을 가까이 느끼는 공간',
-    image: aboutForestImg,
+    image: shelterBreathImg,
     to: '/shelter/breath',
   },
   {
