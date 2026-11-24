@@ -2,16 +2,19 @@ import { useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import ecoIconsStripImg from '../assets/courses/eco-icons.png'
-import aboutForestImg from '../assets/images/about-forest.jpg'
-import homeHeroImg from '../assets/images/home-hero.jpg'
-import magArchivingImg from '../assets/images/mag-archiving.jpg'
-import magMemoryImg from '../assets/images/mag-memory.jpg'
+import memCircle1Img from '../assets/images/mem-circle-1.jpg'
+import memCircle2Img from '../assets/images/mem-circle-2.jpg'
+import memCircle3Img from '../assets/images/mem-circle-3.jpg'
+import memCircle4Img from '../assets/images/mem-circle-4.jpg'
+import memCircle5Img from '../assets/images/mem-circle-5.jpg'
+import memCircle6Img from '../assets/images/mem-circle-6.jpg'
+import memCircle7Img from '../assets/images/mem-circle-7.jpg'
+import memCircle8Img from '../assets/images/mem-circle-8.jpg'
+import memCol1Img from '../assets/images/mem-col-1.jpg'
+import memCol2Img from '../assets/images/mem-col-2.jpg'
+import memCol3Img from '../assets/images/mem-col-3.jpg'
+import memCol4Img from '../assets/images/mem-col-4.jpg'
 import memoryHeroImg from '../assets/images/memory-hero.jpg'
-import propParkImg from '../assets/images/prop-park.jpg'
-import propStreetImg from '../assets/images/prop-street.jpg'
-import shelterQuietImg from '../assets/images/shelter-quiet.jpg'
-import shelterRestImg from '../assets/images/shelter-rest.jpg'
-import shelterWalkImg from '../assets/images/shelter-walk.jpg'
 import { EcoMapView, type MapPin } from '../components/EcoMapView'
 import {
   ECOLOGY_STORIES,
@@ -206,7 +209,7 @@ export function MagazineDetailPage() {
             <Link to="/magazine/history" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>공릉동의 역사</h2>
               <img
-                src={shelterWalkImg}
+                src={memCol1Img}
                 alt="공릉동의 역사"
                 className={styles.memoryColImg}
               />
@@ -218,7 +221,7 @@ export function MagazineDetailPage() {
             <Link to="/magazine/residents" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>주민들의 추억</h2>
               <img
-                src={shelterRestImg}
+                src={memCol2Img}
                 alt="주민들의 추억"
                 className={styles.memoryColImg}
               />
@@ -230,7 +233,7 @@ export function MagazineDetailPage() {
             <Link to="/magazine/seasons" className={styles.memoryCol}>
               <h2 className={styles.memoryColTitle}>계절의 변화</h2>
               <img
-                src={propParkImg}
+                src={memCol3Img}
                 alt="계절의 변화"
                 className={styles.memoryColImg}
               />
@@ -244,7 +247,7 @@ export function MagazineDetailPage() {
                 공릉동 사는 사람들 이야기
               </h2>
               <img
-                src={propStreetImg}
+                src={memCol4Img}
                 alt="공릉동 사는 사람들 이야기"
                 className={styles.memoryColImg}
               />
@@ -258,14 +261,14 @@ export function MagazineDetailPage() {
           <h2 className={styles.memoryCircleTitle}>공릉동의 역사</h2>
           <div className={styles.memoryCircleGrid}>
             {[
-              magArchivingImg,
-              homeHeroImg,
-              propParkImg,
-              aboutForestImg,
-              shelterRestImg,
-              shelterWalkImg,
-              shelterQuietImg,
-              magMemoryImg,
+              memCircle1Img,
+              memCircle2Img,
+              memCircle3Img,
+              memCircle4Img,
+              memCircle5Img,
+              memCircle6Img,
+              memCircle7Img,
+              memCircle8Img,
             ].map((imgSrc, idx) => (
               <Link key={idx} to="/magazine/history">
                 <img
