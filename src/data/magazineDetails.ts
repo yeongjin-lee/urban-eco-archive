@@ -16,24 +16,24 @@ import c5Right from '../assets/courses/c5-right.png'
 import c6Icon from '../assets/courses/c6-icon.png'
 import c6Left from '../assets/courses/c6-left.png'
 import c6Right from '../assets/courses/c6-right.png'
-import aboutForestImg from '../assets/images/about-forest.jpg'
+import arc1Img from '../assets/images/arc-1.jpg'
+import arc2Img from '../assets/images/arc-2.jpg'
+import arc3Img from '../assets/images/arc-3.jpg'
+import eco1Img from '../assets/images/eco-1.jpg'
+import eco2Img from '../assets/images/eco-2.jpg'
+import eco3Img from '../assets/images/eco-3.jpg'
+import eco4Img from '../assets/images/eco-4.jpg'
+import eco5Img from '../assets/images/eco-5.jpg'
+import eco6Img from '../assets/images/eco-6.jpg'
+import eco7Img from '../assets/images/eco-7.jpg'
+import eco8Img from '../assets/images/eco-8.jpg'
+import eco9Img from '../assets/images/eco-9.jpg'
 import hist1Img from '../assets/images/hist-1.jpg'
 import hist2Img from '../assets/images/hist-2.jpg'
 import hist3Img from '../assets/images/hist-3.jpg'
 import hist4Img from '../assets/images/hist-4.jpg'
 import hist5Img from '../assets/images/hist-5.jpg'
 import hist6Img from '../assets/images/hist-6.jpg'
-import homeHeroImg from '../assets/images/home-hero.jpg'
-import magArchivingImg from '../assets/images/mag-archiving.jpg'
-import magEcologyImg from '../assets/images/mag-ecology.jpg'
-import magMemoryImg from '../assets/images/mag-memory.jpg'
-import propParkImg from '../assets/images/prop-park.jpg'
-import propShadeImg from '../assets/images/prop-shade.jpg'
-import propStreamImg from '../assets/images/prop-stream.jpg'
-import propStreetImg from '../assets/images/prop-street.jpg'
-import shelterQuietImg from '../assets/images/shelter-quiet.jpg'
-import shelterRestImg from '../assets/images/shelter-rest.jpg'
-import shelterWalkImg from '../assets/images/shelter-walk.jpg'
 
 export interface WalkingCourse {
   id: string
@@ -216,7 +216,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-1',
     title: '길에 만나는 식물',
     englishTitle: 'Plants Found in Gongneung',
-    image: propShadeImg,
+    image: eco1Img,
     paragraphs: [
       '공릉동의 가로수와 공원, 골목길 화단에서 다양한 나무와 식물을 만날 수 있다.',
       '일상적인 산책길에서 발견할 수 있는 지역의 식물과 녹지 공간을 살펴본다.',
@@ -226,7 +226,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-2',
     title: '계절마다 달라지는 풍경',
     englishTitle: 'Seasonal Changes in the Neighborhood',
-    image: propParkImg,
+    image: eco2Img,
     paragraphs: [
       '봄에는 꽃이 피고 여름에는 짙은 녹음이 동네를 채운다.',
       '가을의 단풍과 겨울의 나뭇가지까지 계절에 따라 변화하는 공릉동의 풍경을 기록한다.',
@@ -236,7 +236,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-3',
     title: '골목길의 작은 정원',
     englishTitle: 'Street Gardens and Urban Planting',
-    image: magMemoryImg,
+    image: eco3Img,
     paragraphs: [
       '주택가와 상점 앞, 골목 모퉁이에 자리한 작은 화단은 동네에 생기를 더한다.',
       '다양한 식재 방식과 주민들이 가꾸는 식물 공간을 관찰한다.',
@@ -246,7 +246,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-4',
     title: '도시를 지키는 나무와 녹지',
     englishTitle: 'The Role of Urban Trees and Green Spaces',
-    image: aboutForestImg,
+    image: eco4Img,
     paragraphs: [
       '나무와 녹지는 그늘을 만들고 빗물을 흡수하며 도시의 열기를 완화하는 역할을 한다.',
       '도시 생태계의 건강과 쾌적한 생활환경을 위해 녹지가 왜 필요한지 알아본다.',
@@ -256,7 +256,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-5',
     title: '일상에 스며든 작은 녹지',
     englishTitle: 'The Meaning of Everyday Green Spaces',
-    image: propStreetImg,
+    image: eco5Img,
     paragraphs: [
       '집 앞 화단과 가로수, 작은 공터의 녹지는 바쁜 일상 속에서 자연을 만나는 기회를 제공한다.',
       '가까이에 있는 녹지가 주민들의 생활과 정서에 어떤 의미를 주는지 살펴본다.',
@@ -266,7 +266,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-6',
     title: '걷고 머무는 공릉동',
     englishTitle: 'Walking and Resting in Gongneung-dong',
-    image: shelterWalkImg,
+    image: eco6Img,
     paragraphs: [
       '경춘선숲길을 비롯한 공릉동의 산책 공간은 걷고 쉬며 주변 풍경을 즐길 수 있는 장소다.',
       '주민들이 자주 찾는 산책길과 휴식 공간의 특징을 소개한다.',
@@ -276,7 +276,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-7',
     title: '도시의 열기와 그늘',
     englishTitle: 'Urban Heat and Shaded Spaces',
-    image: shelterRestImg,
+    image: eco7Img,
     paragraphs: [
       '건물과 도로가 밀집한 도시 공간은 여름철 열기가 쉽게 쌓인다.',
       '가로수와 녹지의 그늘이 보행 환경과 체감온도에 미치는 영향을 살펴본다.',
@@ -286,7 +286,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-8',
     title: '동네에서 만나는 생명들',
     englishTitle: 'Birds and Insects in the Neighborhood',
-    image: magArchivingImg,
+    image: eco8Img,
     paragraphs: [
       '공원과 가로수, 화단은 새와 곤충에게 먹이와 서식 환경을 제공한다.',
       '산책길에서 만나는 새와 나비, 벌 등 작은 생명들을 관찰하며 도시 생태의 다양성을 알아본다.',
@@ -296,7 +296,7 @@ export const ECOLOGY_STORIES: EcologyStory[] = [
     id: 'eco-9',
     title: '우리 동네 생태 관찰하기',
     englishTitle: 'Observing Urban Ecology',
-    image: magEcologyImg,
+    image: eco9Img,
     paragraphs: [
       '산책하면서 식물의 이름과 개화 시기, 새와 곤충의 출현 장소 등을 기록할 수 있다.',
       '사진과 지도, 관찰 일지를 활용해 공릉동의 자연환경을 꾸준히 아카이빙하는 사람들의 이야기를 들어보자.',
@@ -312,7 +312,7 @@ export const ARCHIVING_HIGHLIGHTS = [
     date: '2026.11.02',
     excerpt:
       '매일 아침 경춘선숲길을 걸으며 계절마다 달라지는 새소리와 꽃의 변화를 사진으로 남기고 있습니다.',
-    image: homeHeroImg,
+    image: arc1Img,
   },
   {
     id: 'arc-2',
@@ -321,7 +321,7 @@ export const ARCHIVING_HIGHLIGHTS = [
     date: '2026.10.19',
     excerpt:
       '가을이 깊어지면 중랑천 수변을 따라 억새가 피어나고 청둥오리 가족들이 찾아옵니다.',
-    image: propStreamImg,
+    image: arc2Img,
   },
   {
     id: 'arc-3',
@@ -330,6 +330,6 @@ export const ARCHIVING_HIGHLIGHTS = [
     date: '2026.10.04',
     excerpt:
       '오래된 소나무들이 만들어 주는 시원한 그늘과 흙길의 감촉이 도심 속 가장 큰 쉼을 줍니다.',
-    image: shelterQuietImg,
+    image: arc3Img,
   },
 ]
