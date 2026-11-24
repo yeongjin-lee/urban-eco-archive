@@ -302,12 +302,17 @@ export function MagazineDetailPage() {
           <p className={styles.pageLead}>
             시간의 흐름 속에서 공릉동의 자연과 마을이 어떻게 변해왔는지 기록합니다.
           </p>
-          <div className={styles.timelineGrid}>
+          <div className={styles.storyGrid}>
             {GONGNEUNG_HISTORY.map((item) => (
-              <article key={item.era} className={styles.timelineCard}>
-                <h2 className={styles.timelineEra}>{item.era}</h2>
-                <p className={styles.timelineSub}>{item.subtitle}</p>
-                <p className={styles.timelineBody}>{item.body}</p>
+              <article key={item.era} className={styles.storyCard}>
+                <img
+                  src={item.image}
+                  alt={item.era}
+                  className={styles.storyImg}
+                />
+                <h2 className={styles.storyTitle}>{item.era}</h2>
+                <p className={styles.storyEn}>{item.subtitle}</p>
+                <p className={styles.storyPara}>{item.body}</p>
               </article>
             ))}
           </div>

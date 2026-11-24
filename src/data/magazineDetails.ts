@@ -17,6 +17,12 @@ import c6Icon from '../assets/courses/c6-icon.png'
 import c6Left from '../assets/courses/c6-left.png'
 import c6Right from '../assets/courses/c6-right.png'
 import aboutForestImg from '../assets/images/about-forest.jpg'
+import hist1Img from '../assets/images/hist-1.jpg'
+import hist2Img from '../assets/images/hist-2.jpg'
+import hist3Img from '../assets/images/hist-3.jpg'
+import hist4Img from '../assets/images/hist-4.jpg'
+import hist5Img from '../assets/images/hist-5.jpg'
+import hist6Img from '../assets/images/hist-6.jpg'
 import homeHeroImg from '../assets/images/home-hero.jpg'
 import magArchivingImg from '../assets/images/mag-archiving.jpg'
 import magEcologyImg from '../assets/images/mag-ecology.jpg'
@@ -155,38 +161,45 @@ export interface HistoryTimelineItem {
   era: string
   subtitle: string
   body: string
+  image: string
 }
 
 export const GONGNEUNG_HISTORY: HistoryTimelineItem[] = [
   {
     era: '지명의 유래',
-    subtitle: 'The Origin of Gongneung-dong',
-    body: '옛 자연마을인 공덕리(孔德里)와 조선 왕릉인 태릉(泰陵)의 이름에서 한 글자씩 따와 "공릉동"이라는 이름이 자리 잡았습니다.',
-  },
-  {
-    era: '왕릉과 능행로',
-    subtitle: 'Royal Tombs and Procession Road',
-    body: '공릉동에는 조선 제11대 중종의 계비 문정왕후의 능인 태릉과 명종의 능인 강릉이 자리해 오랜 세월 숲과 녹지가 보존되어 왔습니다.',
+    subtitle: 'The Origin of the Name',
+    image: hist1Img,
+    body: '옛 자연마을인 공덕리(孔德里)의 ‘공(孔)’과 문정왕후의 능인 태릉(泰陵)의 ‘릉(陵)’ 두 지명이 결합되면서 오늘날의 공릉동이라는 이름이 탄생했다.',
   },
   {
     era: '1914년',
     subtitle: 'Administrative Reorganization',
-    body: '1914년 행정구역 개편으로 경기도 양주군 노해면 공덕리로 편제되며 근대적 마을 경계가 형성되었습니다.',
+    image: hist2Img,
+    body: '1914년 행정구역 개편으로 양주군 노원면과 해등촌면이 통합되어 노해면이 만들어졌다. 과정에서 기존의 여러 자연마을이 공덕리로 통합되면서 공릉동 지역의 행정적 기반이 형성되었다.',
   },
   {
-    era: '일제강점기 이후',
-    subtitle: 'After the Japanese Colonial Period',
-    body: '경춘선 철도가 놓이고 주변 교육·연구 기관들이 들어서면서 서울 동북부의 주요 생활권으로 변화하기 시작했습니다.',
+    era: '왕릉과 능행로',
+    subtitle: 'Royal Tombs and the Royal Processional Route',
+    image: hist3Img,
+    body: '공릉동에는 조선 제11대 중종의 계비 문정왕후의 능인 태릉과 제13대 명종과 인순왕후의 능인 강릉이 자리하고 있다.',
   },
   {
     era: '1962~1963년',
     subtitle: 'Incorporation into Seoul',
-    body: '1962년 말 행정구역 개편을 통해 서울특별시 성북구(이후 도봉구·노원구)로 편입되며 본격적인 도시화가 진행되었습니다.',
+    image: hist4Img,
+    body: '1962년 말 행정구역 개편을 거쳐 1963년 1월 1일, 경기도 양주군 노해면 공덕리가 서울특별시에 편입되었다. 이 시기를 전후해 공릉동이라는 행정지명이 정착하면서 서울의 도시 공간으로 편입되기 시작했다.',
+  },
+  {
+    era: '일제강점기 이후',
+    subtitle: 'After the Japanese Colonial Period',
+    image: hist5Img,
+    body: '일제강점기에는 제생원 양육부와 1939년 개통된 경춘철도 등 새로운 시설과 교통 기반이 들어서면서 지역의 변화가 시작되었다. 해방 이후에는 교육기관과 군사·체육시설 등이 들어섰고, 1970년대부터 도로 개통과 주거지 개발을 거치며 도시화가 진행되었다.',
   },
   {
     era: '현재의 모습',
     subtitle: 'Gongneung-dong Today',
-    body: '오늘날 공릉동은 주거지역과 대학가, 경춘선숲길·불암산·중랑천이 어우러진 도심 속 생태 문화 공간으로 사랑받고 있습니다.',
+    image: hist6Img,
+    body: '오늘날 공릉동은 주거지역과 대학가, 전통시장, 생활문화 공간이 어우러진 지역으로 자리 잡았다. 태릉과 강릉의 역사적 경관, 경춘선숲길과 같은 녹지 공간이 공존하며 과거와 현재의 도시 풍경을 함께 보여준다.',
   },
 ]
 
